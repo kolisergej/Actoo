@@ -249,7 +249,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="24K-RY-GnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2677" y="388"/>
+            <point key="canvasLocation" x="2683" y="388"/>
         </scene>
         <!--Reminder navigation-->
         <scene sceneID="k3l-Kw-eil">

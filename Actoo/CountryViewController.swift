@@ -13,6 +13,8 @@ private let reuseIdentifier = "CountryCell"
 class CountryViewController: UICollectionViewController {
 
     var countries = [Country]()
+    weak var delegate: TranslaterViewController!
+    var isFromCalled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,23 +35,9 @@ class CountryViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
     }
-    */
-
-    // MARK: UICollectionViewDataSource
-
-//    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 1
-//    }
-
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return countries.count
@@ -62,7 +50,9 @@ class CountryViewController: UICollectionViewController {
         cell.countryName.text = country.countryName
         
         let path = NSBundle.mainBundle().resourcePath!
-        cell.flagImage.image = UIImage(contentsOfFile: path + "/" + country.flagImage)?.imageWithRenderingMode(.AlwaysOriginal)
+        let image = UIImage(contentsOfFile: path + "/" + country.flagImage)!.imageWithRenderingMode(.AlwaysOriginal)
+        cell.flagImage.image = image
+        
         cell.flagImage.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).CGColor
         cell.flagImage.layer.borderWidth = 2
         cell.flagImage.layer.cornerRadius = 3
@@ -71,6 +61,28 @@ class CountryViewController: UICollectionViewController {
         return cell
     }
 
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let country = countries[indexPath.item]
+        let toBtn = (delegate.toLngBtn.customView as! UIButton)
+        let fromBtn = (delegate.fromLngBtn.customView as! UIButton)
+        let path = NSBundle.mainBundle().resourcePath!
+        if isFromCalled {
+            delegate.fromLngBtn.title = country.countryName
+            fromBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + country.flagImage)!.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            if !(delegate.languageDirections[country.countryName]!.contains(delegate.toLngBtn.title!)) {
+                let countryName = delegate.languageDirections[country.countryName]!.first!
+                delegate.toLngBtn.title = countryName
+                // here hack countryName
+                toBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + countryName)!.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            }
+        } else {
+            delegate.toLngBtn.title = country.countryName
+            toBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + country.flagImage)!.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+        }
+        navigationController?.popViewControllerAnimated(true)
+    }
+
+    
     // MARK: UICollectionViewDelegate
 
     /*
