@@ -19,7 +19,7 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ReminderCell", forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
-            cell.textLabel?.text = currentWord!.origWord
+            cell.textLabel?.text = currentWord!.origWord + " (\(currentWord!.fromLng))"
         }
         else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
             let title = currentWord!.trWord
@@ -30,7 +30,7 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
                     synonyms += synonym + "; "
                 }
             }
-            cell.textLabel?.text = title + synonyms
+            cell.textLabel?.text = title + synonyms + " (\(currentWord!.toLng))"
         } else {
             let keys = Array(currentWord!.examples.keys)
             let key = keys[indexPath.row - 2]
