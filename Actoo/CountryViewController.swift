@@ -26,7 +26,7 @@ class CountryViewController: UICollectionViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         setTabBarVisible(false, viewController: self)
     }
 
@@ -50,7 +50,7 @@ class CountryViewController: UICollectionViewController {
         cell.countryName.text = country.countryName
         
         let path = NSBundle.mainBundle().resourcePath!
-        let image = UIImage(contentsOfFile: path + "/" + country.flagImage)!.imageWithRenderingMode(.AlwaysOriginal)
+        let image = UIImage(contentsOfFile: path + "/" + country.flagImage)!
         cell.flagImage.image = image
         
         cell.flagImage.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).CGColor
@@ -68,16 +68,20 @@ class CountryViewController: UICollectionViewController {
         let path = NSBundle.mainBundle().resourcePath!
         if isFromCalled {
             delegate.fromLngBtn.title = country.countryName
-            fromBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + country.flagImage)!.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            fromBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + country.flagImage)!, forState: .Normal)
             if !(delegate.languageDirections[country.countryName]!.contains(delegate.toLngBtn.title!)) {
                 let countryName = delegate.languageDirections[country.countryName]!.first!
                 delegate.toLngBtn.title = countryName
-                // here hack countryName
-                toBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + countryName)!.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+                for cnt in countries {
+                    if cnt.countryName == countryName {
+                        toBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + cnt.flagImage)!, forState: .Normal)
+                        break;
+                    }
+                }
             }
         } else {
             delegate.toLngBtn.title = country.countryName
-            toBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + country.flagImage)!.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            toBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + country.flagImage)!, forState: .Normal)
         }
         navigationController?.popViewControllerAnimated(true)
     }

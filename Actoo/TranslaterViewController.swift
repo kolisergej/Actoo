@@ -53,7 +53,7 @@ class TranslaterViewController: UIViewController {
         
         let path = NSBundle.mainBundle().resourcePath!
         let fromBtn = UIButton(type: .Custom)
-        let fromImage = UIImage(contentsOfFile: path + "/" + fromLng)!.imageWithRenderingMode(.AlwaysOriginal)
+        let fromImage = UIImage(contentsOfFile: path + "/" + fromLng)!
         fromBtn.frame = CGRectMake(0, 0, fromImage.size.width, fromImage.size.height);
         fromBtn.setBackgroundImage(fromImage, forState: .Normal)
         fromBtn.addTarget(self, action: #selector(fromLngSegue), forControlEvents: .TouchUpInside)
@@ -61,7 +61,7 @@ class TranslaterViewController: UIViewController {
         fromLngBtn.title = fromLng
         
         let toBtn = UIButton(type: .Custom)
-        let toImage = UIImage(contentsOfFile: path + "/" + toLng)!.imageWithRenderingMode(.AlwaysOriginal)
+        let toImage = UIImage(contentsOfFile: path + "/" + toLng)!
         toBtn.frame = CGRectMake(0, 0, toImage.size.width, toImage.size.height);
         toBtn.setBackgroundImage(toImage, forState: .Normal)
         toBtn.addTarget(self, action: #selector(toLngSegue), forControlEvents: .TouchUpInside)
@@ -77,7 +77,7 @@ class TranslaterViewController: UIViewController {
         resultTableView.separatorColor = UIColor.clearColor()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         words = appDelegate.words
         setTabBarVisible(true, viewController: self)
     }
