@@ -13,6 +13,7 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
 
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     var languageDirections = [String: [String]]()
+    var currentWord: Word?
     var switchLngBtn: UIBarButtonItem!
     var fromLngBtn: UIBarButtonItem! {
         didSet {
@@ -83,12 +84,6 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidAppear(animated: Bool) {
         words = appDelegate.words
-        for word in words {
-            print(word.origWord, word.rating)
-            for example in word.examples {
-                print(example.0, example.1)
-            }
-        }
     }
     
     @IBAction func translate(sender: AnyObject) {
@@ -103,13 +98,15 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
                 if words[index].origWord == trimmedString && words[index].fromLng == fromLngBtn.title && words[index].toLng == toLngBtn.title {
                     words[index].rating += 1
                     saveWords()
-                    updateTableView(words[index])
+                    currentWord = words[index]
+                    resultTableView.reloadData()
                     return
                 }
             }
             
             if let url = buildTranslateUrl() {
-                updateTableView(nil) // set title ""
+                currentWord = nil
+                resultTableView.reloadData()
                 print(url.absoluteString)
                 let waitVc = UIAlertController(title: "Yandex transate service", message: nil, preferredStyle: .Alert)
                 waitVc.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
@@ -123,9 +120,10 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
                 if let data = try? NSData(contentsOfURL: url, options: []) {
                     let json = JSON(data: data)
                     if let word = handleTranslateNetworkAnswer(json) {
-                        waitVc.dismissViewControllerAnimated(true) {[unowned self] in
+                        waitVc.dismissViewControllerAnimated(true) {[unowned self, word] in
+                            self.currentWord = word
                             self.words.append(word)
-                            self.updateTableView(word)
+                            self.resultTableView.reloadData()
                         }
                     } else {
                         waitVc.dismissViewControllerAnimated(true) { [unowned self] in
@@ -168,44 +166,33 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
         return NSURL(string: translateUrl + "?key=" + token + "&lang=" + fromLngBtn.title! + "-" + toLngBtn.title! + "&text=" + escapedText)
     }
     
-    func updateTableView(word: Word?) {
-        let cell = tableView(resultTableView, cellForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
-        let title = word?.trWord ?? ""
-        var synonyms = ""
-        if let syns = word?.syns {
-            if !syns.isEmpty {
-                synonyms += "; ";
-                for synonym in syns {
-                    synonyms += synonym + "; "
-                }
-            }
-        }
-        
-        cell.textLabel?.text = title + synonyms
-        resultTableView.reloadData()
-
-//        for syn in word?.syns {
-//            print(syn)
-//        }
-//        for ex in word?.examples {
-//            print(ex.0, "-", ex.1)
-//        }
-//
-//        setResultTableCellTitle(value.translatedWord + synonims + examples)
-//        print(value.translatedWord + synonims + examples)
-    }
-    
     func showError(title: String, message: String) {
-        updateTableView(nil) // ""
+        currentWord = nil
+        resultTableView.reloadData()
         showErrorController(title: title, message: message, view: self)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return currentWord != nil ? (1 + currentWord!.examples.count) : 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TranslaterCell", forIndexPath: indexPath)
+        if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
+            let title = currentWord!.trWord
+            var synonyms = ""
+            if !(currentWord!.syns.isEmpty) {
+                synonyms += "; ";
+                for synonym in currentWord!.syns {
+                    synonyms += synonym + "; "
+                }
+            }
+            cell.textLabel?.text = title + synonyms
+        } else {
+            let keys = Array(currentWord!.examples.keys)
+            let key = keys[indexPath.row - 1]
+            cell.textLabel?.text = key + " - " + currentWord!.examples[key]!
+        }
         return cell
     }
     
