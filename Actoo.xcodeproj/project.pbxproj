@@ -510,7 +510,9 @@
 		9B45CB321D1021A100229D22 /* zm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B45C9401D1021A100229D22 /* zm@2x.png */; };
 		9B45CB331D1021A100229D22 /* zw.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B45C9411D1021A100229D22 /* zw.png */; };
 		9B45CB341D1021A100229D22 /* zw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B45C9421D1021A100229D22 /* zw@2x.png */; };
-		9B45CB361D10287C00229D22 /* FlagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B45CB351D10287C00229D22 /* FlagsViewController.swift */; };
+		9B45CB361D10287C00229D22 /* CountryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B45CB351D10287C00229D22 /* CountryViewController.swift */; };
+		9B45CB381D10438C00229D22 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B45CB371D10438C00229D22 /* CountryCell.swift */; };
+		9B45CB3A1D10478200229D22 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B45CB391D10478200229D22 /* Country.swift */; };
 		9B596DC51D053F2F00BAB889 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B596DC41D053F2F00BAB889 /* Word.swift */; };
 		9B8F89D31CF1F55F00EB3517 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8F89D21CF1F55F00EB3517 /* AppDelegate.swift */; };
 		9B8F89D51CF1F55F00EB3517 /* TranslaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8F89D41CF1F55F00EB3517 /* TranslaterViewController.swift */; };
@@ -1025,7 +1027,9 @@
 		9B45C9401D1021A100229D22 /* zm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zm@2x.png"; sourceTree = "<group>"; };
 		9B45C9411D1021A100229D22 /* zw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zw.png; sourceTree = "<group>"; };
 		9B45C9421D1021A100229D22 /* zw@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zw@2x.png"; sourceTree = "<group>"; };
-		9B45CB351D10287C00229D22 /* FlagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagsViewController.swift; sourceTree = "<group>"; };
+		9B45CB351D10287C00229D22 /* CountryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryViewController.swift; sourceTree = "<group>"; };
+		9B45CB371D10438C00229D22 /* CountryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
+		9B45CB391D10478200229D22 /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		9B596DC41D053F2F00BAB889 /* Word.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		9B8F89CF1CF1F55F00EB3517 /* Actoo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Actoo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8F89D21CF1F55F00EB3517 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1584,19 +1588,21 @@
 			isa = PBXGroup;
 			children = (
 				9B8F89D21CF1F55F00EB3517 /* AppDelegate.swift */,
-				9B45CB351D10287C00229D22 /* FlagsViewController.swift */,
-				9B45C74E1D100C2F00229D22 /* ReminderTableViewBehavior.swift */,
-				9B45C74C1D1005EE00229D22 /* TranslaterTableViewBehavior.swift */,
-				9B596DC41D053F2F00BAB889 /* Word.swift */,
-				9B8F89E81CF1FA5400EB3517 /* ReminderViewController.swift */,
-				9B8F89D41CF1F55F00EB3517 /* TranslaterViewController.swift */,
-				9B2F58A41D0EE00D00E15364 /* Helper.swift */,
-				9BE07C271CF3621A009472BB /* SwiftyJSON.swift */,
 				9BE07C251CF2148C009472BB /* Assets.xcassets */,
 				9B45C3621D0F010D00229D22 /* Content */,
-				9B8F89D61CF1F55F00EB3517 /* Main.storyboard */,
-				9B8F89DB1CF1F55F00EB3517 /* LaunchScreen.storyboard */,
+				9B45CB391D10478200229D22 /* Country.swift */,
+				9B45CB371D10438C00229D22 /* CountryCell.swift */,
+				9B45CB351D10287C00229D22 /* CountryViewController.swift */,
+				9B2F58A41D0EE00D00E15364 /* Helper.swift */,
 				9B8F89DE1CF1F55F00EB3517 /* Info.plist */,
+				9B8F89DB1CF1F55F00EB3517 /* LaunchScreen.storyboard */,
+				9B8F89D61CF1F55F00EB3517 /* Main.storyboard */,
+				9B45C74E1D100C2F00229D22 /* ReminderTableViewBehavior.swift */,
+				9B8F89E81CF1FA5400EB3517 /* ReminderViewController.swift */,
+				9BE07C271CF3621A009472BB /* SwiftyJSON.swift */,
+				9B45C74C1D1005EE00229D22 /* TranslaterTableViewBehavior.swift */,
+				9B8F89D41CF1F55F00EB3517 /* TranslaterViewController.swift */,
+				9B596DC41D053F2F00BAB889 /* Word.swift */,
 			);
 			path = Actoo;
 			sourceTree = "<group>";
@@ -2180,7 +2186,9 @@
 				9B8F89D31CF1F55F00EB3517 /* AppDelegate.swift in Sources */,
 				9BE07C281CF3621A009472BB /* SwiftyJSON.swift in Sources */,
 				9B45C74D1D1005EE00229D22 /* TranslaterTableViewBehavior.swift in Sources */,
-				9B45CB361D10287C00229D22 /* FlagsViewController.swift in Sources */,
+				9B45CB3A1D10478200229D22 /* Country.swift in Sources */,
+				9B45CB381D10438C00229D22 /* CountryCell.swift in Sources */,
+				9B45CB361D10287C00229D22 /* CountryViewController.swift in Sources */,
 				9B2F58A51D0EE00D00E15364 /* Helper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

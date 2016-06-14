@@ -50,8 +50,8 @@ class TranslaterViewController: UIViewController {
         let defaultManager = NSUserDefaults.standardUserDefaults()
         let fromLng = defaultManager.valueForKey("fromLng") as? String ?? "en"
         let toLng = defaultManager.valueForKey("toLng") as? String ?? "ru"
-        fromLngBtn = UIBarButtonItem(title: fromLng, style: .Plain, target: self, action: #selector(goSegue))
-        toLngBtn = UIBarButtonItem(title: toLng, style: .Plain, target: self, action: #selector(goSegue))
+        fromLngBtn = UIBarButtonItem(title: fromLng, style: .Plain, target: self, action: #selector(fromLngSegue))
+        toLngBtn = UIBarButtonItem(title: toLng, style: .Plain, target: self, action: #selector(toLngSegue))
         
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.title = "Translater mode"
@@ -167,8 +167,30 @@ class TranslaterViewController: UIViewController {
         appDelegate.saveWords()
     }
     
-    func goSegue() {
-        performSegueWithIdentifier("showLanguages", sender: self)
+    func fromLngSegue() {
+        performSegueWithIdentifier("showLanguages", sender: "fromLng")
+    }
+    
+    func toLngSegue() {
+        performSegueWithIdentifier("showLanguages", sender: "toLng")
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showLanguages" {
+            let senderButtonId = sender as! String
+            let countryViewController = segue.destinationViewController as! CountryViewController
+            countryViewController.navigationItem.leftItemsSupplementBackButton = true
+            if senderButtonId == "fromLng" {
+                for country in languageDirections {
+                    countryViewController.countries.append(Country(countryName: country.0, flagImage: country.0))
+                }
+            } else if senderButtonId == "toLng" {
+                for country in languageDirections[fromLngBtn.title!]! {
+                    countryViewController.countries.append(Country(countryName: country, flagImage: country))
+                }
+            }
+        }
+
     }
     
     override func didReceiveMemoryWarning() {

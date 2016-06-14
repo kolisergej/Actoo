@@ -8,18 +8,18 @@
 
 import UIKit
 
-private let reuseIdentifier = "FlagCell"
+private let reuseIdentifier = "CountryCell"
 
-class FlagsViewController: UICollectionViewController {
+class CountryViewController: UICollectionViewController {
 
+    var countries = [Country]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView!.backgroundColor = UIColor.whiteColor()
         // Do any additional setup after loading the view.
     }
@@ -45,21 +45,28 @@ class FlagsViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
+//    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 1
+//    }
 
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
+        return countries.count
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CountryCell
     
-        // Configure the cell
+        let country = countries[indexPath.item]
+        cell.countryName.text = country.countryName
+        
+        let path = NSBundle.mainBundle().resourcePath!
+        cell.flagImage.image = UIImage(contentsOfFile: path + "/" + country.flagImage)?.imageWithRenderingMode(.AlwaysOriginal)
+        cell.flagImage.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).CGColor
+        cell.flagImage.layer.borderWidth = 2
+        cell.flagImage.layer.cornerRadius = 3
+        cell.layer.cornerRadius = 7
     
         return cell
     }
