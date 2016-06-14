@@ -18,3 +18,26 @@ func showErrorController(title title: String, message: String, view: UIViewContr
     vc.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
     view.presentViewController(vc, animated: true, completion: nil)
 }
+
+func setTabBarVisible(visible: Bool, viewController: UIViewController) {
+    if (tabBarIsVisible(viewController) != visible) {
+        let frame = viewController.tabBarController?.tabBar.frame
+        let height = frame?.size.height
+        let offsetY = (visible ? -height! : height)
+        
+        // zero duration means no animation
+        let duration: NSTimeInterval = 0.2
+        
+        //  animate the tabBar
+        if frame != nil {
+            UIView.animateWithDuration(duration) {
+                viewController.tabBarController?.tabBar.frame = CGRectOffset(frame!, 0, offsetY!)
+                return
+            }
+        }
+    }
+}
+
+func tabBarIsVisible(viewController: UIViewController) -> Bool {
+    return viewController.tabBarController?.tabBar.frame.origin.y < CGRectGetMaxY(viewController.view.frame)
+}

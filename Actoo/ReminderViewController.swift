@@ -8,13 +8,17 @@
 
 import UIKit
 
-class ReminderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ReminderViewController: UIViewController {
 
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     
     @IBOutlet weak var reminderTableView: UITableView!
     
+    @IBOutlet weak var forgotBtn: UIButton!
+    @IBOutlet weak var gotItBtn: UIButton!
+    @IBOutlet weak var knowBtn: UIButton!
     var currentOriginIndex = Int()
+    var tableViewBehavior = ReminderTableViewBehavior()
     var words = [Word]() {
         didSet {
             saveWords()
@@ -30,14 +34,27 @@ class ReminderViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         navigationItem.title = "Reminder mode"
+        
+        gotItBtn.hidden = true
+        reminderTableView.dataSource = tableViewBehavior
+        reminderTableView.delegate = tableViewBehavior
         reminderTableView.separatorColor = UIColor.clearColor()
     }
     
     override func viewDidAppear(animated: Bool) {
         words = appDelegate.words
+        tableViewBehavior.extendMode = false
         if !words.isEmpty {
             showWord()
         }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        tableViewBehavior.currentWord = nil
+        gotItBtn.hidden = true
+        forgotBtn.hidden = false
+        knowBtn.hidden = false
+        reminderTableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,13 +62,14 @@ class ReminderViewController: UIViewController, UITableViewDataSource, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ReminderCell", forIndexPath: indexPath)
-        return cell
+    @IBAction func gotItBtnPressed(sender: AnyObject) {
+        gotItBtn.hidden = true
+        forgotBtn.hidden = false
+        knowBtn.hidden = false
+        if !words.isEmpty {
+            tableViewBehavior.extendMode = false
+            showWord()
+        }
     }
     
     @IBAction func acceptBtnPressed(sender: AnyObject) {
@@ -68,24 +86,22 @@ class ReminderViewController: UIViewController, UITableViewDataSource, UITableVi
         if !words.isEmpty {
             words[currentOriginIndex].rating += 1
             saveWords()
-            showWord()
+            forgotBtn.hidden = true
+            knowBtn.hidden = true
+            gotItBtn.hidden = false
+            tableViewBehavior.extendMode = true
+            reminderTableView.reloadData()
         }
     }
     
     func showWord() {
-        currentOriginIndex = RandomInt(min: 0, max: words.count - 1)
-        let word = words[currentOriginIndex]
-        let cell = tableView(reminderTableView, cellForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
-        
-        var synonyms = ""
-        if !word.syns.isEmpty {
-            synonyms += "; ";
-            for synonym in word.syns {
-                synonyms += synonym + "; "
+        let index = currentOriginIndex
+        if words.count > 1 {
+            while currentOriginIndex == index {
+                currentOriginIndex = RandomInt(min: 0, max: words.count - 1)
             }
         }
-        
-        cell.textLabel?.text = word.origWord + " - " + word.trWord + synonyms
+        tableViewBehavior.currentWord = words[currentOriginIndex]
         reminderTableView.reloadData()
     }
     

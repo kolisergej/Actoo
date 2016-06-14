@@ -9,24 +9,14 @@
 
 import UIKit
 
-class TranslaterViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class TranslaterViewController: UIViewController {
 
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     var languageDirections = [String: [String]]()
-    var currentWord: Word?
+    var tableViewBehavior = TranslaterTableViewBehavior()
     var switchLngBtn: UIBarButtonItem!
-    var fromLngBtn: UIBarButtonItem! {
-        didSet {
-            let defaultManager = NSUserDefaults.standardUserDefaults()
-            defaultManager.setValue(fromLngBtn.title!, forKey: "fromLng")
-        }
-    }
-    var toLngBtn: UIBarButtonItem! {
-        didSet {
-            let defaultManager = NSUserDefaults.standardUserDefaults()
-            defaultManager.setValue(toLngBtn.title!, forKey: "toLng")
-        }
-    }
+    var fromLngBtn: UIBarButtonItem!
+    var toLngBtn: UIBarButtonItem!
     var words = [Word]() {
         didSet {
             saveWords()
@@ -35,18 +25,6 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet weak var textForTranslate: UITextField!
     @IBOutlet weak var resultTableView: UITableView!
-    
-    func switchLng() {
-        let tmpLngBtn = fromLngBtn
-        fromLngBtn = toLngBtn
-        toLngBtn = tmpLngBtn
-        navigationItem.rightBarButtonItems = [toLngBtn, switchLngBtn, fromLngBtn]
-    }
-    
-    func saveWords() {
-        appDelegate.words = words
-        appDelegate.saveWords()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,18 +50,21 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
         let defaultManager = NSUserDefaults.standardUserDefaults()
         let fromLng = defaultManager.valueForKey("fromLng") as? String ?? "en"
         let toLng = defaultManager.valueForKey("toLng") as? String ?? "ru"
-        fromLngBtn = UIBarButtonItem(title: fromLng, style: .Plain, target: self, action: nil)
-        toLngBtn = UIBarButtonItem(title: toLng, style: .Plain, target: self, action: nil)
+        fromLngBtn = UIBarButtonItem(title: fromLng, style: .Plain, target: self, action: #selector(goSegue))
+        toLngBtn = UIBarButtonItem(title: toLng, style: .Plain, target: self, action: #selector(goSegue))
         
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.title = "Translater mode"
         navigationItem.rightBarButtonItems = [toLngBtn, switchLngBtn, fromLngBtn]
         
+        resultTableView.dataSource = tableViewBehavior
+        resultTableView.delegate = tableViewBehavior
         resultTableView.separatorColor = UIColor.clearColor()
     }
     
     override func viewDidAppear(animated: Bool) {
         words = appDelegate.words
+        setTabBarVisible(true, viewController: self)
     }
     
     @IBAction func translate(sender: AnyObject) {
@@ -98,14 +79,14 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
                 if words[index].origWord == trimmedString && words[index].fromLng == fromLngBtn.title && words[index].toLng == toLngBtn.title {
                     words[index].rating += 1
                     saveWords()
-                    currentWord = words[index]
+                    tableViewBehavior.currentWord = words[index]
                     resultTableView.reloadData()
                     return
                 }
             }
             
             if let url = buildTranslateUrl() {
-                currentWord = nil
+                tableViewBehavior.currentWord = nil
                 resultTableView.reloadData()
                 print(url.absoluteString)
                 let waitVc = UIAlertController(title: "Yandex transate service", message: nil, preferredStyle: .Alert)
@@ -121,7 +102,7 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
                     let json = JSON(data: data)
                     if let word = handleTranslateNetworkAnswer(json) {
                         waitVc.dismissViewControllerAnimated(true) {[unowned self, word] in
-                            self.currentWord = word
+                            self.tableViewBehavior.currentWord = word
                             self.words.append(word)
                             self.resultTableView.reloadData()
                         }
@@ -167,33 +148,27 @@ class TranslaterViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func showError(title: String, message: String) {
-        currentWord = nil
+        tableViewBehavior.currentWord = nil
         resultTableView.reloadData()
         showErrorController(title: title, message: message, view: self)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentWord != nil ? (1 + currentWord!.examples.count) : 0
+    func switchLng() {
+        let tmpLngTitle = fromLngBtn.title
+        fromLngBtn.title = toLngBtn.title
+        toLngBtn.title = tmpLngTitle
+        let defaultManager = NSUserDefaults.standardUserDefaults()
+        defaultManager.setValue(fromLngBtn.title!, forKey: "fromLng")
+        defaultManager.setValue(toLngBtn.title!, forKey: "toLng")
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TranslaterCell", forIndexPath: indexPath)
-        if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
-            let title = currentWord!.trWord
-            var synonyms = ""
-            if !(currentWord!.syns.isEmpty) {
-                synonyms += "; ";
-                for synonym in currentWord!.syns {
-                    synonyms += synonym + "; "
-                }
-            }
-            cell.textLabel?.text = title + synonyms
-        } else {
-            let keys = Array(currentWord!.examples.keys)
-            let key = keys[indexPath.row - 1]
-            cell.textLabel?.text = key + " - " + currentWord!.examples[key]!
-        }
-        return cell
+    func saveWords() {
+        appDelegate.words = words
+        appDelegate.saveWords()
+    }
+    
+    func goSegue() {
+        performSegueWithIdentifier("showLanguages", sender: self)
     }
     
     override func didReceiveMemoryWarning() {
