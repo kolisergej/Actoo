@@ -67,7 +67,7 @@
                     <navigationItem key="navigationItem" id="Fim-Zf-ZRd">
                         <nil key="title"/>
                         <rightBarButtonItems>
-                            <barButtonItem style="plain" id="r6R-5a-8JV">
+                            <barButtonItem id="r6R-5a-8JV">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" id="Yjy-8Q-4XW">
                                     <rect key="frame" x="525" y="9" width="55" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -87,7 +87,7 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
-                            <barButtonItem style="plain" id="NKZ-eF-j6W">
+                            <barButtonItem id="NKZ-eF-j6W">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DVE-Qu-dH2">
                                     <rect key="frame" x="487" y="9" width="30" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -97,7 +97,7 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
-                            <barButtonItem style="plain" id="fa2-tM-2Vf">
+                            <barButtonItem id="fa2-tM-2Vf">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" id="qKV-x7-Ka6">
                                     <rect key="frame" x="424" y="9" width="55" height="25"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

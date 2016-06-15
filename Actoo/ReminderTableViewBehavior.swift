@@ -37,6 +37,7 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
             cell.textLabel?.text = key + " - " + currentWord!.examples[key]!
         }
         cell.textLabel?.numberOfLines = 0
+        cell.selectionStyle = .None
         return cell
     }
 }
