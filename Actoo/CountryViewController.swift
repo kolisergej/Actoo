@@ -48,11 +48,7 @@ class CountryViewController: UICollectionViewController {
     
         let country = countries[indexPath.item]
         cell.countryName.text = country.countryName
-        
-        let path = NSBundle.mainBundle().resourcePath!
-        let image = UIImage(contentsOfFile: path + "/" + country.flagImage)!
-        cell.flagImage.image = image
-        
+        cell.flagImage.image = UIImage(named: country.flagImage)
         cell.flagImage.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).CGColor
         cell.flagImage.layer.borderWidth = 2
         cell.flagImage.layer.cornerRadius = 3
@@ -63,26 +59,24 @@ class CountryViewController: UICollectionViewController {
 
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let country = countries[indexPath.item]
-        let toBtn = (delegate.toLngBtn.customView as! UIButton)
-        let fromBtn = (delegate.fromLngBtn.customView as! UIButton)
-        let path = NSBundle.mainBundle().resourcePath!
         if isFromCalled {
-            delegate.fromLngBtn.title = country.countryName
-            fromBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + country.flagImage)!, forState: .Normal)
-            if !(delegate.languageDirections[country.countryName]!.contains(delegate.toLngBtn.title!)) {
+            delegate.fromLngBtn.setAttributedTitle(NSAttributedString(string: country.countryName), forState: .Normal)
+            delegate.fromLngBtn.setImage(UIImage(named: country.flagImage), forState: .Normal)
+            if !(delegate.languageDirections[country.countryName]!.contains(delegate.toLngBtn.currentAttributedTitle!.string)) {
                 let countryName = delegate.languageDirections[country.countryName]!.first!
-                delegate.toLngBtn.title = countryName
+                delegate.toLngBtn.setAttributedTitle(NSAttributedString(string: countryName), forState: .Normal)
                 for cnt in countries {
                     if cnt.countryName == countryName {
-                        toBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + cnt.flagImage)!, forState: .Normal)
+                        delegate.toLngBtn.setImage(UIImage(named: cnt.flagImage), forState: .Normal)
                         break;
                     }
                 }
             }
         } else {
-            delegate.toLngBtn.title = country.countryName
-            toBtn.setBackgroundImage(UIImage(contentsOfFile: path + "/" + country.flagImage)!, forState: .Normal)
+            delegate.toLngBtn.setAttributedTitle(NSAttributedString(string: country.countryName), forState: .Normal)
+            delegate.toLngBtn.setImage(UIImage(named: country.flagImage), forState: .Normal)
         }
+        delegate.saveLanguages()
         navigationController?.popViewControllerAnimated(true)
     }
 

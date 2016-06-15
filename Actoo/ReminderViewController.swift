@@ -21,13 +21,8 @@ class ReminderViewController: UIViewController {
     var tableViewBehavior = ReminderTableViewBehavior()
     var words = [Word]() {
         didSet {
-            saveWords()
+            appDelegate.words = words
         }
-    }
-    
-    func saveWords() {
-        appDelegate.words = words
-        appDelegate.saveWords()
     }
     
     override func viewDidLoad() {
@@ -76,7 +71,7 @@ class ReminderViewController: UIViewController {
         if !words.isEmpty {
             if words[currentOriginIndex].rating > 0 {
                 words[currentOriginIndex].rating -= 1
-                saveWords()
+                appDelegate.words = words
             }
             showWord()
         }
@@ -85,7 +80,7 @@ class ReminderViewController: UIViewController {
     @IBAction func rejectBtnPressed(sender: AnyObject) {
         if !words.isEmpty {
             words[currentOriginIndex].rating += 1
-            saveWords()
+            appDelegate.words = words
             forgotBtn.hidden = true
             knowBtn.hidden = true
             gotItBtn.hidden = false

@@ -10,19 +10,18 @@
 import UIKit
 
 class TranslaterViewController: UIViewController {
-
+    
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     var languageDirections = [String: [String]]()
     var tableViewBehavior = TranslaterTableViewBehavior()
-    var switchLngBtn: UIBarButtonItem!
-    var fromLngBtn: UIBarButtonItem!
-    var toLngBtn: UIBarButtonItem!
     var words = [Word]() {
         didSet {
-            saveWords()
+            appDelegate.words = words
         }
     }
     
+    @IBOutlet weak var fromLngBtn: UIButton!
+    @IBOutlet weak var toLngBtn: UIButton!
     @IBOutlet weak var textForTranslate: UITextField!
     @IBOutlet weak var resultTableView: UITableView!
     
@@ -44,33 +43,19 @@ class TranslaterViewController: UIViewController {
         } else {
             showErrorController(title: "Unexpected error", message: "Internal error. Contact to kolisergej@yandex.ru", view: self)
         }
-
-        switchLngBtn = UIBarButtonItem(image: UIImage(named: "switch")!, style: .Plain, target: self, action: #selector(switchLng))
         
         let defaultManager = NSUserDefaults.standardUserDefaults()
         let fromLng = defaultManager.valueForKey("fromLng") as? String ?? "en"
         let toLng = defaultManager.valueForKey("toLng") as? String ?? "ru"
         
-        let path = NSBundle.mainBundle().resourcePath!
-        let fromBtn = UIButton(type: .Custom)
-        let fromImage = UIImage(contentsOfFile: path + "/" + fromLng)!
-        fromBtn.frame = CGRectMake(0, 0, fromImage.size.width, fromImage.size.height);
-        fromBtn.setBackgroundImage(fromImage, forState: .Normal)
-        fromBtn.addTarget(self, action: #selector(fromLngSegue), forControlEvents: .TouchUpInside)
-        fromLngBtn = UIBarButtonItem(customView: fromBtn)
-        fromLngBtn.title = fromLng
+        fromLngBtn.setImage(UIImage(named: fromLng), forState: .Normal)
+        fromLngBtn.setAttributedTitle(NSAttributedString(string: fromLng), forState: .Normal)
         
-        let toBtn = UIButton(type: .Custom)
-        let toImage = UIImage(contentsOfFile: path + "/" + toLng)!
-        toBtn.frame = CGRectMake(0, 0, toImage.size.width, toImage.size.height);
-        toBtn.setBackgroundImage(toImage, forState: .Normal)
-        toBtn.addTarget(self, action: #selector(toLngSegue), forControlEvents: .TouchUpInside)
-        toLngBtn = UIBarButtonItem(customView: toBtn)
-        toLngBtn.title = toLng
+        toLngBtn.setImage(UIImage(named: toLng), forState: .Normal)
+        toLngBtn.setAttributedTitle(NSAttributedString(string: toLng), forState: .Normal)
         
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.title = "Translater"
-        navigationItem.rightBarButtonItems = [toLngBtn, switchLngBtn, fromLngBtn]
         
         resultTableView.dataSource = tableViewBehavior
         resultTableView.delegate = tableViewBehavior
@@ -79,6 +64,7 @@ class TranslaterViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         words = appDelegate.words
+
         setTabBarVisible(true, viewController: self)
     }
     
@@ -91,9 +77,9 @@ class TranslaterViewController: UIViewController {
             }
             
             for index in 0 ..< words.count {
-                if words[index].origWord == trimmedString && words[index].fromLng == fromLngBtn.title! && words[index].toLng == toLngBtn.title! {
+                if words[index].origWord == trimmedString && words[index].fromLng == fromLngBtn.currentAttributedTitle?.string && words[index].toLng == toLngBtn.currentAttributedTitle?.string {
                     words[index].rating += 1
-                    saveWords()
+                    appDelegate.words = words
                     tableViewBehavior.currentWord = words[index]
                     resultTableView.reloadData()
                     return
@@ -103,7 +89,7 @@ class TranslaterViewController: UIViewController {
             if let url = buildTranslateUrl() {
                 tableViewBehavior.currentWord = nil
                 resultTableView.reloadData()
-//                print(url.absoluteString)
+                //                print(url.absoluteString)
                 let waitVc = UIAlertController(title: "Yandex transate service", message: nil, preferredStyle: .Alert)
                 waitVc.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
                 let indicator = UIActivityIndicatorView(frame: waitVc.view.bounds)
@@ -136,7 +122,7 @@ class TranslaterViewController: UIViewController {
             }
         }
     }
-
+    
     func handleTranslateNetworkAnswer(json: JSON) -> Word? {
         let translateAnswer = json["def"].arrayValue
         if !translateAnswer.isEmpty {
@@ -152,14 +138,14 @@ class TranslaterViewController: UIViewController {
             for example in examplesAnswer {
                 examples[example["text"].stringValue] = example["tr"][0]["text"].stringValue
             }
-            return Word(origWord: origWord, fromLng: fromLngBtn.title!, trWord: tr, toLng: toLngBtn.title!, syns: synonims, examples: examples, rating: 1)
+            return Word(origWord: origWord, fromLng: fromLngBtn.currentAttributedTitle!.string, trWord: tr, toLng: toLngBtn.currentAttributedTitle!.string, syns: synonims, examples: examples, rating: 1)
         }
         return nil
     }
     
     func buildTranslateUrl() -> NSURL? {
         let escapedText = textForTranslate.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-        return NSURL(string: translateUrl + "?key=" + token + "&lang=" + fromLngBtn.title! + "-" + toLngBtn.title! + "&text=" + escapedText)
+        return NSURL(string: translateUrl + "?key=" + token + "&lang=" + fromLngBtn.currentAttributedTitle!.string + "-" + toLngBtn.currentAttributedTitle!.string + "&text=" + escapedText)
     }
     
     func showError(title: String, message: String) {
@@ -168,42 +154,38 @@ class TranslaterViewController: UIViewController {
         showErrorController(title: title, message: message, view: self)
     }
     
-    func switchLng() {
-        let fromBtn = fromLngBtn.customView as! UIButton
-        let toBtn = toLngBtn.customView as! UIButton
+    @IBAction func switchLngBtnPressed(sender: AnyObject) {
+        let tmpLngTitle = fromLngBtn.currentAttributedTitle
+        let tmpImg = fromLngBtn.currentImage
         
-        let tmpLngTitle = fromLngBtn.title!
-        let tmpImg = fromBtn.backgroundImageForState(.Normal)
+        fromLngBtn.setAttributedTitle(toLngBtn.currentAttributedTitle, forState: .Normal)
+        fromLngBtn.setImage(toLngBtn.currentImage, forState: .Normal)
+        toLngBtn.setAttributedTitle(tmpLngTitle, forState: .Normal)
+        toLngBtn.setImage(tmpImg, forState: .Normal)
         
-        fromLngBtn.title = toLngBtn.title!
-        fromBtn.setBackgroundImage(toBtn.backgroundImageForState(.Normal), forState: .Normal)
-        toLngBtn.title = tmpLngTitle
-        toBtn.setBackgroundImage(tmpImg, forState: .Normal)
-        
+        saveLanguages()
+    }
+    
+    func saveLanguages() {
         let defaultManager = NSUserDefaults.standardUserDefaults()
-        defaultManager.setValue(fromLngBtn.title!, forKey: "fromLng")
-        defaultManager.setValue(toLngBtn.title!, forKey: "toLng")
+        defaultManager.setValue(fromLngBtn.currentAttributedTitle!.string, forKey: "fromLng")
+        defaultManager.setValue(toLngBtn.currentAttributedTitle!.string, forKey: "toLng")
     }
     
-    func saveWords() {
-        appDelegate.words = words
-        appDelegate.saveWords()
-    }
-    
-    func fromLngSegue() {
+    @IBAction func fromLngBtnPressed(sender: AnyObject) {
         performSegueWithIdentifier("showLanguages", sender: "fromLng")
     }
     
-    func toLngSegue() {
+    @IBAction func toLngBtnPressed(sender: AnyObject) {
         performSegueWithIdentifier("showLanguages", sender: "toLng")
     }
     
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showLanguages" {
             let senderButtonId = sender as! String
             let countryViewController = segue.destinationViewController as! CountryViewController
             countryViewController.delegate = self
-            countryViewController.navigationItem.leftItemsSupplementBackButton = true
             if senderButtonId == "fromLng" {
                 countryViewController.isFromCalled = true
                 for country in languageDirections {
@@ -211,7 +193,7 @@ class TranslaterViewController: UIViewController {
                 }
             } else if senderButtonId == "toLng" {
                 countryViewController.isFromCalled = false
-                for country in languageDirections[fromLngBtn.title!]! {
+                for country in languageDirections[fromLngBtn.currentAttributedTitle!.string]! {
                     countryViewController.countries.append(Country(countryName: country, flagImage: country))
                 }
             }

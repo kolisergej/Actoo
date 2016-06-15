@@ -6,6 +6,7 @@
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Translater-->
@@ -63,10 +64,66 @@
                             <constraint firstItem="14X-kb-f0e" firstAttribute="leading" secondItem="9nP-0g-VNk" secondAttribute="leading" id="jIo-Xf-H85"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Fim-Zf-ZRd"/>
+                    <navigationItem key="navigationItem" id="Fim-Zf-ZRd">
+                        <nil key="title"/>
+                        <rightBarButtonItems>
+                            <barButtonItem style="plain" id="r6R-5a-8JV">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" id="Yjy-8Q-4XW">
+                                    <rect key="frame" x="525" y="9" width="55" height="25"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" image="ru.png">
+                                        <attributedString key="attributedTitle">
+                                            <fragment content="ru">
+                                                <attributes>
+                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="18" name="HelveticaNeue"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                    </state>
+                                    <connections>
+                                        <action selector="toLngBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uER-dW-f3Z"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                            <barButtonItem style="plain" id="NKZ-eF-j6W">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DVE-Qu-dH2">
+                                    <rect key="frame" x="487" y="9" width="30" height="25"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" image="switch.png"/>
+                                    <connections>
+                                        <action selector="switchLngBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uRg-6I-fuL"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                            <barButtonItem style="plain" id="fa2-tM-2Vf">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" id="qKV-x7-Ka6">
+                                    <rect key="frame" x="424" y="9" width="55" height="25"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" image="en.png">
+                                        <attributedString key="attributedTitle">
+                                            <fragment content="en">
+                                                <attributes>
+                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="18" name="HelveticaNeue"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                    </state>
+                                    <connections>
+                                        <action selector="fromLngBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LUX-qP-Cc9"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
+                        <outlet property="fromLngBtn" destination="qKV-x7-Ka6" id="50a-C0-91D"/>
                         <outlet property="resultTableView" destination="9nP-0g-VNk" id="fq2-tI-wZa"/>
                         <outlet property="textForTranslate" destination="14X-kb-f0e" id="c6U-Bc-dTE"/>
+                        <outlet property="toLngBtn" destination="Yjy-8Q-4XW" id="N8C-kV-laN"/>
                         <segue destination="WBT-af-ogl" kind="show" identifier="showLanguages" id="doV-jz-AXb"/>
                     </connections>
                 </viewController>
@@ -271,4 +328,9 @@
             <point key="canvasLocation" x="1147" y="1132"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="en.png" width="30" height="23"/>
+        <image name="ru.png" width="30" height="23"/>
+        <image name="switch.png" width="22" height="22"/>
+    </resources>
 </document>
