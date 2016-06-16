@@ -52,7 +52,12 @@ class CountryViewController: UICollectionViewController {
         cell.flagImage.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).CGColor
         cell.flagImage.layer.borderWidth = 2
         cell.flagImage.layer.cornerRadius = 3
-        cell.layer.cornerRadius = 7
+        if (isFromCalled && country.flagImage == delegate.fromLngBtn.currentAttributedTitle?.string) ||
+            (!isFromCalled && country.flagImage == delegate.toLngBtn.currentAttributedTitle?.string) {
+            cell.layer.cornerRadius = 7
+            cell.layer.borderWidth = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+        }
     
         return cell
     }
@@ -76,7 +81,14 @@ class CountryViewController: UICollectionViewController {
             delegate.toLngBtn.setAttributedTitle(NSAttributedString(string: country.countryName), forState: .Normal)
             delegate.toLngBtn.setImage(UIImage(named: country.flagImage), forState: .Normal)
         }
+        UIView.animateWithDuration(1.0) {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CountryCell
+            cell.layer.cornerRadius = 7
+            cell.layer.borderWidth = 5
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+        }
         delegate.saveLanguages()
+
         navigationController?.popViewControllerAnimated(true)
     }
 

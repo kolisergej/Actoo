@@ -50,9 +50,13 @@ class TranslaterViewController: UIViewController {
         
         fromLngBtn.setImage(UIImage(named: fromLng), forState: .Normal)
         fromLngBtn.setAttributedTitle(NSAttributedString(string: fromLng), forState: .Normal)
+        fromLngBtn.imageView?.layer.borderWidth = 1
+        fromLngBtn.imageView?.layer.borderColor = UIColor.grayColor().CGColor
         
         toLngBtn.setImage(UIImage(named: toLng), forState: .Normal)
         toLngBtn.setAttributedTitle(NSAttributedString(string: toLng), forState: .Normal)
+        toLngBtn.imageView?.layer.borderWidth = 1
+        toLngBtn.imageView?.layer.borderColor = UIColor.grayColor().CGColor
         
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.title = "Translater"
