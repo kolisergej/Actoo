@@ -85,7 +85,7 @@ class CountryViewController: UICollectionViewController {
             delegate.toLngBtn.setImage(UIImage(named: country.flagImage), forState: .Normal)
         }
         
-        UIView.animateWithDuration(0.4, animations: {
+        UIView.animateWithDuration(0.5, animations: {[unowned self] () -> Void in
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CountryCell
             let currentCell = collectionView.cellForItemAtIndexPath(self.currentIndex) as! CountryCell
             currentCell.layer.borderWidth = 0
@@ -93,8 +93,9 @@ class CountryViewController: UICollectionViewController {
             cell.layer.borderWidth = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
             self.delegate.saveLanguages()
-        }) {(value: Bool) -> Void in
-            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
+        }) {[unowned self]
+            (value: Bool) -> Void in
+            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.12 * Double(NSEC_PER_SEC)))
             dispatch_after(dispatchTime, dispatch_get_main_queue()) {
                 self.navigationController?.popViewControllerAnimated(true)
             }
