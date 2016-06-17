@@ -15,6 +15,7 @@ class CountryViewController: UICollectionViewController {
     var countries = [Country]()
     weak var delegate: TranslaterViewController!
     var isFromCalled = true
+    var currentIndex: NSIndexPath!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,9 +45,9 @@ class CountryViewController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CountryCell
-    
         let country = countries[indexPath.item]
+        
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CountryCell
         cell.countryName.text = country.countryName
         cell.flagImage.image = UIImage(named: country.flagImage)
         cell.flagImage.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).CGColor
@@ -57,6 +58,7 @@ class CountryViewController: UICollectionViewController {
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
+            currentIndex = indexPath
         }
     
         return cell
@@ -64,6 +66,7 @@ class CountryViewController: UICollectionViewController {
 
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let country = countries[indexPath.item]
+        
         if isFromCalled {
             delegate.fromLngBtn.setAttributedTitle(NSAttributedString(string: country.countryName), forState: .Normal)
             delegate.fromLngBtn.setImage(UIImage(named: country.flagImage), forState: .Normal)
@@ -81,15 +84,21 @@ class CountryViewController: UICollectionViewController {
             delegate.toLngBtn.setAttributedTitle(NSAttributedString(string: country.countryName), forState: .Normal)
             delegate.toLngBtn.setImage(UIImage(named: country.flagImage), forState: .Normal)
         }
-        UIView.animateWithDuration(1.0) {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CountryCell
+        
+        UIView.animateWithDuration(0.4, animations: {
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CountryCell
+            let currentCell = collectionView.cellForItemAtIndexPath(self.currentIndex) as! CountryCell
+            currentCell.layer.borderWidth = 0
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
+            self.delegate.saveLanguages()
+        }) {(value: Bool) -> Void in
+            let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
+            dispatch_after(dispatchTime, dispatch_get_main_queue()) {
+                self.navigationController?.popViewControllerAnimated(true)
+            }
         }
-        delegate.saveLanguages()
-
-        navigationController?.popViewControllerAnimated(true)
     }
 
     
