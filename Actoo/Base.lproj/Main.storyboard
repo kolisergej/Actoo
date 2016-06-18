@@ -26,6 +26,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
+                                    <action selector="translate:" destination="BYZ-38-t0r" eventType="editingDidEndOnExit" id="JlJ-lS-vaR"/>
                                     <action selector="translate:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="kjP-0h-790"/>
                                 </connections>
                             </textField>
