@@ -13,6 +13,7 @@ class ReminderViewController: UIViewController {
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     
     @IBOutlet weak var reminderTableView: UITableView!
+    @IBOutlet weak var initTextView: UITextView!
     
     @IBOutlet weak var forgotBtn: UIButton!
     @IBOutlet weak var gotItBtn: UIButton!
@@ -30,18 +31,25 @@ class ReminderViewController: UIViewController {
         // Do any additional setup after loading the view.
         navigationItem.title = "Reminder"
         
-        gotItBtn.hidden = true
         reminderTableView.dataSource = tableViewBehavior
         reminderTableView.delegate = tableViewBehavior
         reminderTableView.separatorColor = UIColor.clearColor()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         words = appDelegate.words
-        tableViewBehavior.extendMode = false
         if !words.isEmpty {
+            initTextView.hidden = true
+            tableViewBehavior.extendMode = false
+            reminderTableView.hidden = false
             showWord()
+        } else {
+            forgotBtn.hidden = true
+            knowBtn.hidden = true
+            initTextView.hidden = false
+            reminderTableView.hidden = true
         }
+        gotItBtn.hidden = true
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -49,6 +57,7 @@ class ReminderViewController: UIViewController {
         gotItBtn.hidden = true
         forgotBtn.hidden = false
         knowBtn.hidden = false
+        tableViewBehavior.extendMode = false
         reminderTableView.reloadData()
     }
 

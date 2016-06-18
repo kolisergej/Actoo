@@ -224,6 +224,19 @@
                                     <action selector="rejectBtnPressed:" destination="Gna-ma-X8f" eventType="touchUpInside" id="8Lh-TX-GKJ"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8L-2f-iMW">
+                                <rect key="frame" x="160" y="237.5" width="280" height="65"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="VtY-LO-mEI"/>
+                                    <constraint firstAttribute="height" constant="65" id="tXh-2K-O9z"/>
+                                </constraints>
+                                <string key="text">No words for remind.
+Add them with translating</string>
+                                <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2mh-IS-AUU">
                                 <rect key="frame" x="278" y="495" width="44" height="30"/>
                                 <state key="normal" title="I got it"/>
@@ -236,9 +249,11 @@
                         <constraints>
                             <constraint firstItem="2mh-IS-AUU" firstAttribute="centerX" secondItem="Pmk-EZ-TyK" secondAttribute="centerX" id="11Q-xT-YxP"/>
                             <constraint firstItem="FKr-A3-rgN" firstAttribute="top" secondItem="2mh-IS-AUU" secondAttribute="bottom" constant="26" id="3GQ-SM-ryG"/>
+                            <constraint firstItem="p8L-2f-iMW" firstAttribute="centerY" secondItem="Pmk-EZ-TyK" secondAttribute="centerY" constant="-30" id="3oc-53-okN"/>
                             <constraint firstItem="FKr-A3-rgN" firstAttribute="top" secondItem="WuM-QU-JZK" secondAttribute="bottom" constant="21" id="EAw-nB-gJv"/>
                             <constraint firstItem="LK2-ZB-pT4" firstAttribute="leading" secondItem="Pmk-EZ-TyK" secondAttribute="leadingMargin" constant="20" id="Qoa-44-wQw"/>
                             <constraint firstItem="WuM-QU-JZK" firstAttribute="top" secondItem="hoP-mx-JVk" secondAttribute="top" id="Rdg-cJ-03s"/>
+                            <constraint firstItem="p8L-2f-iMW" firstAttribute="centerX" secondItem="Pmk-EZ-TyK" secondAttribute="centerX" id="czG-Od-a3d"/>
                             <constraint firstItem="hoP-mx-JVk" firstAttribute="baseline" secondItem="WuM-QU-JZK" secondAttribute="firstBaseline" id="fL1-xt-02A"/>
                             <constraint firstItem="LK2-ZB-pT4" firstAttribute="top" secondItem="Bvm-2Y-FOJ" secondAttribute="bottom" constant="39" id="i1i-jz-uIe"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hoP-mx-JVk" secondAttribute="trailing" constant="40" id="kYV-dI-zKl"/>
@@ -251,6 +266,7 @@
                     <connections>
                         <outlet property="forgotBtn" destination="hoP-mx-JVk" id="7Pw-wW-lFb"/>
                         <outlet property="gotItBtn" destination="2mh-IS-AUU" id="maj-hU-lxE"/>
+                        <outlet property="initTextView" destination="p8L-2f-iMW" id="FSi-vF-d71"/>
                         <outlet property="knowBtn" destination="WuM-QU-JZK" id="MH4-Zz-kfk"/>
                         <outlet property="reminderTableView" destination="LK2-ZB-pT4" id="wrv-Eq-Twt"/>
                     </connections>

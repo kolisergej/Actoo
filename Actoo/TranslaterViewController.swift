@@ -78,6 +78,9 @@ class TranslaterViewController: UIViewController {
             if trimmedString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).count > 1 {
                 showError("Yandex translate service", message: "Put in one word")
                 return
+            } else if trimmedString.isEmpty {
+                showError("Yandex translate service", message: "Put any word")
+                return
             }
             
             for index in 0 ..< words.count {
