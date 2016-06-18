@@ -9,8 +9,13 @@
 import UIKit
 import Foundation
 
-class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataSource {
+class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var currentWord: Word?
+    
+    func textFieldShouldReturn(userText: UITextField) -> Bool {
+        userText.resignFirstResponder()
+        return true
+    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currentWord != nil ? (1 + currentWord!.examples.count) : 0
@@ -36,5 +41,5 @@ class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDat
         cell.textLabel?.numberOfLines = 0
         cell.selectionStyle = .None
         return cell
-    }
+    }    
 }

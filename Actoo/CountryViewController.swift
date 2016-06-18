@@ -15,7 +15,6 @@ class CountryViewController: UICollectionViewController {
     var countries = [Country]()
     weak var delegate: TranslaterViewController!
     var isFromCalled = true
-    var currentIndex: NSIndexPath!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +57,6 @@ class CountryViewController: UICollectionViewController {
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor
-            currentIndex = indexPath
         }
     
         return cell
@@ -87,8 +85,9 @@ class CountryViewController: UICollectionViewController {
         
         UIView.animateWithDuration(0.5, animations: {[unowned self] () -> Void in
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CountryCell
-            let currentCell = collectionView.cellForItemAtIndexPath(self.currentIndex) as! CountryCell
-            currentCell.layer.borderWidth = 0
+            for visibleCells in collectionView.visibleCells() {
+                visibleCells.layer.borderWidth = 0
+            }
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 5
             cell.layer.borderColor = UIColor.grayColor().CGColor

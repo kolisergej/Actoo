@@ -20,6 +20,7 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
         let cell = tableView.dequeueReusableCellWithIdentifier("ReminderCell", forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
             cell.textLabel?.text = currentWord!.origWord + " (\(currentWord!.fromLng))"
+            cell.textLabel?.textAlignment = .Center
         }
         else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
             let title = currentWord!.trWord

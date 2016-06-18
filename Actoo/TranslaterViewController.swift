@@ -61,6 +61,7 @@ class TranslaterViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.title = "Translater"
         
+        textForTranslate.delegate = tableViewBehavior
         resultTableView.dataSource = tableViewBehavior
         resultTableView.delegate = tableViewBehavior
         resultTableView.separatorColor = UIColor.clearColor()
