@@ -36,7 +36,6 @@ class TranslaterViewController: UIViewController {
         
         let extractedToken = getCurrentTokenIndex()
         if let url = NSURL(string: supportedLanguagedUrl + extractedToken) {
-            print(url.absoluteString)
             if let data = try? NSData(contentsOfURL: url, options: []) {
                 let json = JSON(data: data).arrayValue
                 for fromToLanguages in json {
@@ -105,10 +104,8 @@ class TranslaterViewController: UIViewController {
             }
             
             if let url = buildTranslateUrl() {
-                print(url.absoluteString)
                 tableViewBehavior.currentWord = nil
                 resultTableView.reloadData()
-                //                print(url.absoluteString)
                 let waitVc = UIAlertController(title: "Yandex transate service", message: nil, preferredStyle: .Alert)
                 waitVc.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
                 let indicator = UIActivityIndicatorView(frame: waitVc.view.bounds)
