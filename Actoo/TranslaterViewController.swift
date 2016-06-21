@@ -202,7 +202,9 @@ class TranslaterViewController: UIViewController {
             } else if senderButtonId == "toLng" {
                 countryViewController.isFromCalled = false
                 for country in languageDirections[fromLngBtn.currentAttributedTitle!.string]! {
-                    countryViewController.countries.append(Country(countryName: country, flagImage: country))
+                    if fromLngBtn.currentAttributedTitle!.string != country {
+                        countryViewController.countries.append(Country(countryName: country, flagImage: country))
+                    }
                 }
             }
         }

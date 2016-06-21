@@ -15,6 +15,7 @@ class CountryViewController: UICollectionViewController {
     var countries = [Country]()
     weak var delegate: TranslaterViewController!
     var isFromCalled = true
+    var currentCellIndex: NSIndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,16 +53,18 @@ class CountryViewController: UICollectionViewController {
         cell.flagImage.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).CGColor
         cell.flagImage.layer.borderWidth = 2
         cell.flagImage.layer.cornerRadius = 3
+        cell.layer.borderWidth = 0
         if (isFromCalled && country.flagImage == delegate.fromLngBtn.currentAttributedTitle?.string) ||
             (!isFromCalled && country.flagImage == delegate.toLngBtn.currentAttributedTitle?.string) {
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 5
-            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderColor = view.tintColor.CGColor
+            currentCellIndex = indexPath
         }
-    
+        
         return cell
     }
-
+    
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let country = countries[indexPath.item]
         
@@ -84,13 +87,14 @@ class CountryViewController: UICollectionViewController {
         }
         
         UIView.animateWithDuration(0.5, animations: {[unowned self] () -> Void in
-            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CountryCell
-            for visibleCells in collectionView.visibleCells() {
-                visibleCells.layer.borderWidth = 0
+            if let _ = self.currentCellIndex {
+                let currentCell = collectionView.cellForItemAtIndexPath(self.currentCellIndex!) as? CountryCell
+                currentCell?.layer.borderWidth = 0
             }
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CountryCell
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 5
-            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderColor = self.view.tintColor.CGColor
             self.delegate.saveLanguages()
         }) {[unowned self]
             (value: Bool) -> Void in
