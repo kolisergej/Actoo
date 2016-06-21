@@ -24,18 +24,28 @@ class TranslaterViewController: UIViewController {
     @IBOutlet weak var toLngBtn: UIButton!
     @IBOutlet weak var textForTranslate: UITextField!
     @IBOutlet weak var resultTableView: UITableView!
+    var currentTokenIndex = 0
+    
+    func getCurrentTokenIndex() -> String {
+        currentTokenIndex += 1
+        return token[currentTokenIndex % token.count]
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let url = NSURL(string: supportedLanguagedUrl + "?key=" + token) {
+        let extractedToken = getCurrentTokenIndex()
+        if let url = NSURL(string: supportedLanguagedUrl + extractedToken) {
+            print(url.absoluteString)
             if let data = try? NSData(contentsOfURL: url, options: []) {
                 let json = JSON(data: data).arrayValue
                 for fromToLanguages in json {
                     let fromTo = fromToLanguages.stringValue.componentsSeparatedByString("-");
                     var toArray = languageDirections[fromTo[0]] ?? [];
-                    toArray.append(fromTo[1])
-                    languageDirections[fromTo[0]] = toArray
+                    if fromTo[0] != fromTo[1] {
+                        toArray.append(fromTo[1])
+                        languageDirections[fromTo[0]] = toArray
+                    }
                 }
             } else {
                 showErrorController(title: "Connection error", message: "Check internet connection.\n Actoo will use cached data.", view: self)
@@ -95,6 +105,7 @@ class TranslaterViewController: UIViewController {
             }
             
             if let url = buildTranslateUrl() {
+                print(url.absoluteString)
                 tableViewBehavior.currentWord = nil
                 resultTableView.reloadData()
                 //                print(url.absoluteString)
@@ -153,7 +164,8 @@ class TranslaterViewController: UIViewController {
     
     func buildTranslateUrl() -> NSURL? {
         let escapedText = textForTranslate.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-        return NSURL(string: translateUrl + "?key=" + token + "&lang=" + fromLngBtn.currentAttributedTitle!.string + "-" + toLngBtn.currentAttributedTitle!.string + "&text=" + escapedText)
+        let extractedToken = getCurrentTokenIndex()
+        return NSURL(string: translateUrl + extractedToken + "&lang=" + fromLngBtn.currentAttributedTitle!.string + "-" + toLngBtn.currentAttributedTitle!.string + "&text=" + escapedText)
     }
     
     func showError(title: String, message: String) {
@@ -202,9 +214,7 @@ class TranslaterViewController: UIViewController {
             } else if senderButtonId == "toLng" {
                 countryViewController.isFromCalled = false
                 for country in languageDirections[fromLngBtn.currentAttributedTitle!.string]! {
-                    if fromLngBtn.currentAttributedTitle!.string != country {
-                        countryViewController.countries.append(Country(countryName: country, flagImage: country))
-                    }
+                    countryViewController.countries.append(Country(countryName: country, flagImage: country))
                 }
             }
         }
