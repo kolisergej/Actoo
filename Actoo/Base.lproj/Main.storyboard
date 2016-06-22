@@ -25,10 +25,6 @@
                                 <rect key="frame" x="20" y="108" width="560" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="translate:" destination="BYZ-38-t0r" eventType="editingDidEndOnExit" id="JlJ-lS-vaR"/>
-                                    <action selector="translate:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="kjP-0h-790"/>
-                                </connections>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9nP-0g-VNk">
                                 <rect key="frame" x="20" y="163" width="560" height="358"/>
@@ -194,7 +190,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WuM-QU-JZK">
-                                <rect key="frame" x="60" y="490" width="100" height="40"/>
+                                <rect key="frame" x="60" y="431" width="100" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="C9w-Uk-ifp"/>
                                     <constraint firstAttribute="height" constant="40" id="gct-FV-WJv"/>
@@ -205,7 +201,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LK2-ZB-pT4">
-                                <rect key="frame" x="20" y="116" width="560" height="347"/>
+                                <rect key="frame" x="20" y="116" width="560" height="295"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReminderCell" textLabel="Ae0-mk-0JG" style="IBUITableViewCellStyleDefault" id="81P-hK-sVd">
@@ -228,7 +224,7 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hoP-mx-JVk">
-                                <rect key="frame" x="440" y="490" width="100" height="40"/>
+                                <rect key="frame" x="440" y="431" width="100" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="hS7-VA-rpY"/>
                                 </constraints>
@@ -251,8 +247,8 @@ Add them with translating</string>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2mh-IS-AUU">
-                                <rect key="frame" x="278" y="495" width="44" height="30"/>
-                                <state key="normal" title="I got it"/>
+                                <rect key="frame" x="281" y="441" width="38" height="30"/>
+                                <state key="normal" title="Got it"/>
                                 <connections>
                                     <action selector="gotItBtnPressed:" destination="Gna-ma-X8f" eventType="touchUpInside" id="cqY-bz-viq"/>
                                 </connections>
@@ -271,12 +267,12 @@ Add them with translating</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2mh-IS-AUU" firstAttribute="centerX" secondItem="Pmk-EZ-TyK" secondAttribute="centerX" id="11Q-xT-YxP"/>
-                            <constraint firstItem="FKr-A3-rgN" firstAttribute="top" secondItem="2mh-IS-AUU" secondAttribute="bottom" constant="26" id="3GQ-SM-ryG"/>
+                            <constraint firstItem="FKr-A3-rgN" firstAttribute="top" secondItem="2mh-IS-AUU" secondAttribute="bottom" constant="80" id="3GQ-SM-ryG"/>
                             <constraint firstItem="p8L-2f-iMW" firstAttribute="centerY" secondItem="Pmk-EZ-TyK" secondAttribute="centerY" constant="-30" id="3oc-53-okN"/>
-                            <constraint firstItem="hoP-mx-JVk" firstAttribute="top" secondItem="LK2-ZB-pT4" secondAttribute="bottom" constant="27" id="4Vh-nR-EQS"/>
+                            <constraint firstItem="hoP-mx-JVk" firstAttribute="top" secondItem="LK2-ZB-pT4" secondAttribute="bottom" constant="20" id="4Vh-nR-EQS"/>
                             <constraint firstItem="eq8-Ew-9Df" firstAttribute="trailing" secondItem="LK2-ZB-pT4" secondAttribute="trailing" id="7kn-Qm-B3A"/>
                             <constraint firstItem="eq8-Ew-9Df" firstAttribute="bottom" secondItem="FKr-A3-rgN" secondAttribute="top" id="82l-Zh-d6K"/>
-                            <constraint firstItem="FKr-A3-rgN" firstAttribute="top" secondItem="WuM-QU-JZK" secondAttribute="bottom" constant="21" id="EAw-nB-gJv"/>
+                            <constraint firstItem="FKr-A3-rgN" firstAttribute="top" secondItem="WuM-QU-JZK" secondAttribute="bottom" constant="80" id="EAw-nB-gJv"/>
                             <constraint firstItem="LK2-ZB-pT4" firstAttribute="top" secondItem="Bvm-2Y-FOJ" secondAttribute="bottom" constant="52" id="K5h-11-RhE"/>
                             <constraint firstItem="WuM-QU-JZK" firstAttribute="top" secondItem="hoP-mx-JVk" secondAttribute="top" id="Rdg-cJ-03s"/>
                             <constraint firstItem="p8L-2f-iMW" firstAttribute="centerX" secondItem="Pmk-EZ-TyK" secondAttribute="centerX" id="czG-Od-a3d"/>

@@ -11,9 +11,11 @@ import Foundation
 
 class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var currentWord: Word?
+    weak var translateController: TranslaterViewController!
     
     func textFieldShouldReturn(userText: UITextField) -> Bool {
         userText.resignFirstResponder()
+        translateController.translate()
         return true
     }
     

@@ -68,6 +68,7 @@ class TranslaterViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.title = "Translater"
         
+        tableViewBehavior.translateController = self
         textForTranslate.delegate = tableViewBehavior
         resultTableView.dataSource = tableViewBehavior
         resultTableView.delegate = tableViewBehavior
@@ -80,7 +81,7 @@ class TranslaterViewController: UIViewController {
         setTabBarVisible(true, viewController: self)
     }
     
-    @IBAction func translate(sender: AnyObject) {
+    func translate() {
         if let input = textForTranslate.text {
             let trimmedString = input.lowercaseString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             if trimmedString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).count > 1 {
