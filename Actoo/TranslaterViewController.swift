@@ -105,13 +105,13 @@ class TranslaterViewController: UIViewController {
             tableViewBehavior.currentWord = nil
             resultTableView.reloadData()
             let waitVc = UIAlertController(title: yandexHeaderService, message: nil, preferredStyle: .Alert)
-            waitVc.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {[unowned self] (UIAlertAction) -> Void in
-                self.currentTranslateRequest?.cancel()
-                })
             let indicator = UIActivityIndicatorView(frame: waitVc.view.bounds)
             indicator.activityIndicatorViewStyle = .Gray
             indicator.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
             waitVc.view.addSubview(indicator)
+            waitVc.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {[unowned self] (UIAlertAction) -> Void in
+                self.currentTranslateRequest?.cancel()
+                })
             indicator.startAnimating()
             presentViewController(waitVc, animated: true, completion: nil)
             
