@@ -19,7 +19,7 @@ class TranslaterViewController: UIViewController {
             appDelegate.words = words
         }
     }
-    var currentTask: NSURLSessionTask?
+    var currentTranslateRequest: NSURLSessionTask?
     
     @IBOutlet weak var fromLngBtn: UIButton!
     @IBOutlet weak var toLngBtn: UIButton!
@@ -36,22 +36,19 @@ class TranslaterViewController: UIViewController {
         super.viewDidLoad()
         
         let extractedToken = getCurrentTokenIndex()
-        if let url = NSURL(string: supportedLanguagedUrl + extractedToken) {
-            if let data = try? NSData(contentsOfURL: url, options: []) {
-                let json = JSON(data: data).arrayValue
-                for fromToLanguages in json {
-                    let fromTo = fromToLanguages.stringValue.componentsSeparatedByString("-");
-                    var toArray = languageDirections[fromTo[0]] ?? [];
-                    if fromTo[0] != fromTo[1] {
-                        toArray.append(fromTo[1])
-                        languageDirections[fromTo[0]] = toArray
-                    }
+        let url = NSURL(string: supportedLanguagedUrl + extractedToken)!
+        if let data = try? NSData(contentsOfURL: url, options: []) {
+            let json = JSON(data: data).arrayValue
+            for fromToLanguages in json {
+                let fromTo = fromToLanguages.stringValue.componentsSeparatedByString("-");
+                var toArray = languageDirections[fromTo[0]] ?? [];
+                if fromTo[0] != fromTo[1] {
+                    toArray.append(fromTo[1])
+                    languageDirections[fromTo[0]] = toArray
                 }
-            } else {
-                showErrorController(title: "Connection error", message: "Check internet connection.\n Actoo will use saved data.", view: parentViewController!)
             }
         } else {
-            showErrorController(title: "Unexpected error", message: "Internal error. Contact to kolisergej@yandex.ru", view: parentViewController!)
+            showErrorController(title: connectionError, message: checkInternetConnection + "\n Actoo will use saved data.", view: parentViewController!)
         }
         
         let defaultManager = NSUserDefaults.standardUserDefaults()
@@ -87,10 +84,10 @@ class TranslaterViewController: UIViewController {
         if let input = textForTranslate.text {
             let trimmedString = input.lowercaseString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             if trimmedString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).count > 1 {
-                showError("Yandex translate service", message: "Put in one word")
+                showError(yandexHeaderService, message: "Put in one word")
                 return
             } else if trimmedString.isEmpty {
-                showError("Yandex translate service", message: "Put any word")
+                showError(yandexHeaderService, message: "Put any word")
                 return
             }
             
@@ -104,39 +101,47 @@ class TranslaterViewController: UIViewController {
                 }
             }
             
-            if let url = buildTranslateUrl() {
-                tableViewBehavior.currentWord = nil
-                resultTableView.reloadData()
-                let waitVc = UIAlertController(title: "Yandex transate service", message: nil, preferredStyle: .Alert)
-                waitVc.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                let indicator = UIActivityIndicatorView(frame: waitVc.view.bounds)
-                indicator.activityIndicatorViewStyle = .Gray
-                indicator.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-                waitVc.view.addSubview(indicator)
-                indicator.startAnimating()
-                presentViewController(waitVc, animated: true, completion: nil)
-                
-                if let data = try? NSData(contentsOfURL: url, options: []) {
-                    let json = JSON(data: data)
-                    if let word = handleTranslateNetworkAnswer(json) {
-                        waitVc.dismissViewControllerAnimated(true) {[unowned self, word] in
-                            self.tableViewBehavior.currentWord = word
-                            self.words.append(word)
-                            self.resultTableView.reloadData()
-                        }
-                    } else {
-                        waitVc.dismissViewControllerAnimated(true) { [unowned self] in
-                            self.showError("Yandex transate service", message: "Unknown word")
-                        }
-                    }
-                } else {
+            let url = buildTranslateUrl()
+            tableViewBehavior.currentWord = nil
+            resultTableView.reloadData()
+            let waitVc = UIAlertController(title: yandexHeaderService, message: nil, preferredStyle: .Alert)
+            waitVc.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {[unowned self] (UIAlertAction) -> Void in
+                self.currentTranslateRequest?.cancel()
+                })
+            let indicator = UIActivityIndicatorView(frame: waitVc.view.bounds)
+            indicator.activityIndicatorViewStyle = .Gray
+            indicator.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            waitVc.view.addSubview(indicator)
+            indicator.startAnimating()
+            presentViewController(waitVc, animated: true, completion: nil)
+            
+            currentTranslateRequest = NSURLSession.sharedSession().dataTaskWithRequest(NSURLRequest(URL: url)) {data, response, error in
+                if error != nil {
                     waitVc.dismissViewControllerAnimated(true) { [unowned self] in
-                        self.showError("Connection error", message: "Check Internet connection")
+                        self.showError(connectionError, message: checkInternetConnection)
+                        return
                     }
                 }
-            } else {
-                showError("Invalid request", message: "Check your words")
+                if let httpResponse = response as? NSHTTPURLResponse {
+                    if httpResponse.statusCode == 200 {
+                        let json = JSON(data: data!)
+                        if let word = self.handleTranslateNetworkAnswer(json) {
+                            waitVc.dismissViewControllerAnimated(true) {[unowned self, word] in
+                                self.tableViewBehavior.currentWord = word
+                                self.words.append(word)
+                                self.resultTableView.reloadData()
+                            }
+                        } else {
+                            waitVc.dismissViewControllerAnimated(true) { [unowned self] in
+                                self.showError(yandexHeaderService, message: "Unknown word")
+                            }
+                        }
+                    } else {
+                        self.showError(yandexHeaderService, message: "Yandex dictionary service error")
+                    }
+                }
             }
+            currentTranslateRequest?.resume()
         }
     }
     
@@ -160,10 +165,10 @@ class TranslaterViewController: UIViewController {
         return nil
     }
     
-    func buildTranslateUrl() -> NSURL? {
+    func buildTranslateUrl() -> NSURL! {
         let escapedText = textForTranslate.text!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         let extractedToken = getCurrentTokenIndex()
-        return NSURL(string: translateUrl + extractedToken + "&lang=" + fromLngBtn.currentAttributedTitle!.string + "-" + toLngBtn.currentAttributedTitle!.string + "&text=" + escapedText)
+        return NSURL(string: translateUrl + extractedToken + "&lang=" + fromLngBtn.currentAttributedTitle!.string + "-" + toLngBtn.currentAttributedTitle!.string + "&text=" + escapedText)!
     }
     
     func showError(title: String, message: String) {

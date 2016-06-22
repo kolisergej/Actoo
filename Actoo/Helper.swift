@@ -12,6 +12,9 @@ import Foundation
 let token = ["dict.1.1.20160621T214817Z.d12839c3b95ffec3.e55a508c638acb72bea68e1e86a7ec37592bc874", "dict.1.1.20160621T214200Z.dec22d89f841297c.f54e574cb34fcabaa29b9202891538ce1cfe08d9"]
 let supportedLanguagedUrl = "https://dictionary.yandex.net/api/v1/dicservice.json/getLangs?key="
 let translateUrl = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key="
+let yandexHeaderService = "Yandex dictionary service"
+let connectionError = "Connection error"
+let checkInternetConnection = "Check Internet connection"
 
 
 func showErrorController(title title: String, message: String, view: UIViewController) {
