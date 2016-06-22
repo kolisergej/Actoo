@@ -519,7 +519,8 @@
 		9B8F89D81CF1F55F00EB3517 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B8F89D61CF1F55F00EB3517 /* Main.storyboard */; };
 		9B8F89DD1CF1F55F00EB3517 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B8F89DB1CF1F55F00EB3517 /* LaunchScreen.storyboard */; };
 		9B8F89E91CF1FA5400EB3517 /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8F89E81CF1FA5400EB3517 /* ReminderViewController.swift */; };
-		9BE07C261CF2148C009472BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BE07C251CF2148C009472BB /* Assets.xcassets */; };
+		9BCB195E1D1B272B004D5975 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB195D1D1B272B004D5975 /* Reachability.swift */; };
+		9BCB19601D1B2B3D004D5975 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BCB195F1D1B2B3D004D5975 /* Images.xcassets */; };
 		9BE07C281CF3621A009472BB /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE07C271CF3621A009472BB /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
@@ -1038,7 +1039,8 @@
 		9B8F89DC1CF1F55F00EB3517 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B8F89DE1CF1F55F00EB3517 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B8F89E81CF1FA5400EB3517 /* ReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
-		9BE07C251CF2148C009472BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9BCB195D1D1B272B004D5975 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		9BCB195F1D1B2B3D004D5975 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9BE07C271CF3621A009472BB /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1587,8 +1589,8 @@
 		9B8F89D11CF1F55F00EB3517 /* Actoo */ = {
 			isa = PBXGroup;
 			children = (
+				9BCB195D1D1B272B004D5975 /* Reachability.swift */,
 				9B8F89D21CF1F55F00EB3517 /* AppDelegate.swift */,
-				9BE07C251CF2148C009472BB /* Assets.xcassets */,
 				9B45C3621D0F010D00229D22 /* Content */,
 				9B45CB391D10478200229D22 /* Country.swift */,
 				9B45CB371D10438C00229D22 /* CountryCell.swift */,
@@ -1603,6 +1605,7 @@
 				9B45C74C1D1005EE00229D22 /* TranslaterTableViewBehavior.swift */,
 				9B8F89D41CF1F55F00EB3517 /* TranslaterViewController.swift */,
 				9B596DC41D053F2F00BAB889 /* Word.swift */,
+				9BCB195F1D1B2B3D004D5975 /* Images.xcassets */,
 			);
 			path = Actoo;
 			sourceTree = "<group>";
@@ -1896,6 +1899,7 @@
 				9B45C9A21D1021A100229D22 /* co@2x.png in Resources */,
 				9B45CA8D1D1021A100229D22 /* no.png in Resources */,
 				9B45CA501D1021A100229D22 /* ly@2x.png in Resources */,
+				9BCB19601D1B2B3D004D5975 /* Images.xcassets in Resources */,
 				9B45C9C31D1021A100229D22 /* eh.png in Resources */,
 				9B45C9E31D1021A100229D22 /* gg.png in Resources */,
 				9B45CA3B1D1021A100229D22 /* la.png in Resources */,
@@ -2084,7 +2088,6 @@
 				9B45CA6B1D1021A100229D22 /* mq.png in Resources */,
 				9B45C9FE1D1021A100229D22 /* hk@2x.png in Resources */,
 				9B45CA601D1021A100229D22 /* mk@2x.png in Resources */,
-				9BE07C261CF2148C009472BB /* Assets.xcassets in Resources */,
 				9B45CA6F1D1021A100229D22 /* ms.png in Resources */,
 				9B45C9D01D1021A100229D22 /* fi@2x.png in Resources */,
 				9B45C9591D1021A100229D22 /* at.png in Resources */,
@@ -2181,6 +2184,7 @@
 			files = (
 				9B8F89D51CF1F55F00EB3517 /* TranslaterViewController.swift in Sources */,
 				9B8F89E91CF1FA5400EB3517 /* ReminderViewController.swift in Sources */,
+				9BCB195E1D1B272B004D5975 /* Reachability.swift in Sources */,
 				9B596DC51D053F2F00BAB889 /* Word.swift in Sources */,
 				9B45C74F1D100C2F00229D22 /* ReminderTableViewBehavior.swift in Sources */,
 				9B8F89D31CF1F55F00EB3517 /* AppDelegate.swift in Sources */,
