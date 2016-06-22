@@ -19,6 +19,7 @@ class TranslaterViewController: UIViewController {
             appDelegate.words = words
         }
     }
+    var currentTask: NSURLSessionTask?
     
     @IBOutlet weak var fromLngBtn: UIButton!
     @IBOutlet weak var toLngBtn: UIButton!
@@ -47,10 +48,10 @@ class TranslaterViewController: UIViewController {
                     }
                 }
             } else {
-                showErrorController(title: "Connection error", message: "Check internet connection.\n Actoo will use cached data.", view: self)
+                showErrorController(title: "Connection error", message: "Check internet connection.\n Actoo will use saved data.", view: parentViewController!)
             }
         } else {
-            showErrorController(title: "Unexpected error", message: "Internal error. Contact to kolisergej@yandex.ru", view: self)
+            showErrorController(title: "Unexpected error", message: "Internal error. Contact to kolisergej@yandex.ru", view: parentViewController!)
         }
         
         let defaultManager = NSUserDefaults.standardUserDefaults()
