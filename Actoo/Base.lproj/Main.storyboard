@@ -240,7 +240,7 @@
                                     <constraint firstAttribute="width" constant="280" id="VtY-LO-mEI"/>
                                     <constraint firstAttribute="height" constant="65" id="tXh-2K-O9z"/>
                                 </constraints>
-                                <string key="text">No words for remind.
+                                <string key="text">No words to remind.
 Add them with translating</string>
                                 <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
