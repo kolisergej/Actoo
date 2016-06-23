@@ -13,7 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var words = [Word]()
+    var words = [NSManagedObject]()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        saveWords()
+        self.saveContext()
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -49,16 +49,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
 
-    func saveWords() {
-        let data = NSKeyedArchiver.archivedDataWithRootObject(words)
-        let defaultManager = NSUserDefaults.standardUserDefaults()
-        defaultManager.setObject(data, forKey: "words")
+    func addWord(wordForSave: Word) -> NSManagedObject {
+        let entity = NSEntityDescription.entityForName("Word", inManagedObjectContext: managedObjectContext)
+        let word = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+        word.setValue(wordForSave.origWord, forKey: "origWord")
+        word.setValue(wordForSave.examples, forKey: "examples")
+        word.setValue(wordForSave.rating, forKey: "rating")
+        word.setValue(wordForSave.trWord, forKey: "trWord")
+        word.setValue(wordForSave.fromLng, forKey: "fromLng")
+        word.setValue(wordForSave.syns, forKey: "syns")
+        word.setValue(wordForSave.toLng, forKey: "toLng")
+        words.append(word)
+        return word
     }
     
     func loadWords() {
-        let defaultManager = NSUserDefaults.standardUserDefaults()
-        if let actooWords = defaultManager.objectForKey("words") as? NSData {
-            words = NSKeyedUnarchiver.unarchiveObjectWithData(actooWords) as! [Word]
+        let fetchRequest = NSFetchRequest(entityName:"Word")
+        let fetchedResults = try! managedObjectContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+        
+        if let results = fetchedResults {
+            words = results
+        } else {
+            print("Could not fetch")
         }
     }
     

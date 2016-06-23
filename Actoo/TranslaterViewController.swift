@@ -8,29 +8,20 @@
 
 
 import UIKit
+import CoreData
 
 class TranslaterViewController: UIViewController {
     
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     var languageDirections = [String: [String]]()
     var tableViewBehavior = TranslaterTableViewBehavior()
-    var words = [Word]() {
-        didSet {
-            appDelegate.words = words
-        }
-    }
     var currentTranslateRequest: NSURLSessionTask?
+    var currentTokenIndex = 0
     
     @IBOutlet weak var fromLngBtn: UIButton!
     @IBOutlet weak var toLngBtn: UIButton!
     @IBOutlet weak var textForTranslate: UITextField!
     @IBOutlet weak var resultTableView: UITableView!
-    var currentTokenIndex = 0
-    
-    func getCurrentTokenIndex() -> String {
-        currentTokenIndex += 1
-        return token[currentTokenIndex % token.count]
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,8 +67,6 @@ class TranslaterViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        words = appDelegate.words
-
         setTabBarVisible(true, viewController: self)
     }
     
@@ -92,11 +81,13 @@ class TranslaterViewController: UIViewController {
                 return
             }
             
+            let words = appDelegate.words
             for index in 0 ..< words.count {
-                if words[index].origWord == trimmedString && words[index].fromLng == fromLngBtn.currentAttributedTitle?.string && words[index].toLng == toLngBtn.currentAttributedTitle?.string {
-                    words[index].rating += 1
-                    appDelegate.words = words
+                if (words[index].valueForKey("origWord") as! String) == trimmedString && (words[index].valueForKey("fromLng") as! String) == fromLngBtn.currentAttributedTitle?.string && (words[index].valueForKey("toLng") as! String) == toLngBtn.currentAttributedTitle?.string {
+                    let rating = words[index].valueForKey("rating") as! Int
+                    words[index].setValue(rating + 1, forKey: "rating")
                     tableViewBehavior.currentWord = words[index]
+                    appDelegate.saveContext()
                     resultTableView.reloadData()
                     return
                 }
@@ -131,8 +122,9 @@ class TranslaterViewController: UIViewController {
                         let json = JSON(data: data!)
                         if let word = self.handleTranslateNetworkAnswer(json) {
                             waitVc.dismissViewControllerAnimated(true) {[unowned self, word] in
-                                self.tableViewBehavior.currentWord = word
-                                self.words.append(word)
+                                let objectWord = self.appDelegate.addWord(word)
+                                self.appDelegate.saveContext()
+                                self.tableViewBehavior.currentWord = objectWord
                                 self.resultTableView.reloadData()
                             }
                         } else {
@@ -197,6 +189,11 @@ class TranslaterViewController: UIViewController {
         let defaultManager = NSUserDefaults.standardUserDefaults()
         defaultManager.setValue(fromLngBtn.currentAttributedTitle!.string, forKey: "fromLng")
         defaultManager.setValue(toLngBtn.currentAttributedTitle!.string, forKey: "toLng")
+    }
+    
+    func getCurrentTokenIndex() -> String {
+        currentTokenIndex += 1
+        return token[currentTokenIndex % token.count]
     }
     
     @IBAction func fromLngBtnPressed(sender: AnyObject) {
