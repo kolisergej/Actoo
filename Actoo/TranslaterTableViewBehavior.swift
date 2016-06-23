@@ -40,8 +40,15 @@ class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDat
             let key = keys[indexPath.row - 1]
             cell.textLabel?.text = key + " - " + currentWord!.examples[key]!
         }
-        cell.textLabel?.numberOfLines = 0
         cell.selectionStyle = .None
         return cell
-    }    
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
 }

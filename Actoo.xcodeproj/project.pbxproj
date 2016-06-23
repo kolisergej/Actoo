@@ -521,6 +521,7 @@
 		9B8F89E91CF1FA5400EB3517 /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8F89E81CF1FA5400EB3517 /* ReminderViewController.swift */; };
 		9BCB195E1D1B272B004D5975 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB195D1D1B272B004D5975 /* Reachability.swift */; };
 		9BCB19601D1B2B3D004D5975 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BCB195F1D1B2B3D004D5975 /* Images.xcassets */; };
+		9BCB19841D1B3A59004D5975 /* ActooModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB19821D1B3A59004D5975 /* ActooModel.xcdatamodeld */; };
 		9BE07C281CF3621A009472BB /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE07C271CF3621A009472BB /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
@@ -1041,6 +1042,7 @@
 		9B8F89E81CF1FA5400EB3517 /* ReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
 		9BCB195D1D1B272B004D5975 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9BCB195F1D1B2B3D004D5975 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9BCB19831D1B3A59004D5975 /* ActooModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ActooModel.xcdatamodel; sourceTree = "<group>"; };
 		9BE07C271CF3621A009472BB /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1591,6 +1593,7 @@
 			children = (
 				9BCB195D1D1B272B004D5975 /* Reachability.swift */,
 				9B8F89D21CF1F55F00EB3517 /* AppDelegate.swift */,
+				9BCB19821D1B3A59004D5975 /* ActooModel.xcdatamodeld */,
 				9B45C3621D0F010D00229D22 /* Content */,
 				9B45CB391D10478200229D22 /* Country.swift */,
 				9B45CB371D10438C00229D22 /* CountryCell.swift */,
@@ -2183,6 +2186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B8F89D51CF1F55F00EB3517 /* TranslaterViewController.swift in Sources */,
+				9BCB19841D1B3A59004D5975 /* ActooModel.xcdatamodeld in Sources */,
 				9B8F89E91CF1FA5400EB3517 /* ReminderViewController.swift in Sources */,
 				9BCB195E1D1B272B004D5975 /* Reachability.swift in Sources */,
 				9B596DC51D053F2F00BAB889 /* Word.swift in Sources */,
@@ -2348,6 +2352,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9BCB19821D1B3A59004D5975 /* ActooModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9BCB19831D1B3A59004D5975 /* ActooModel.xcdatamodel */,
+			);
+			currentVersion = 9BCB19831D1B3A59004D5975 /* ActooModel.xcdatamodel */;
+			path = ActooModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9B8F89C71CF1F55E00EB3517 /* Project object */;
 }
