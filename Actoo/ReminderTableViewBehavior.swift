@@ -33,7 +33,7 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
                     synonyms += synonym + "; "
                 }
             }
-            cell.textLabel?.text = title + synonyms + "\(currentWord!.valueForKey("rating") as! Int)"
+            cell.textLabel?.text = title + synonyms //+ "\(currentWord!.valueForKey("rating") as! Int)"
         } else {
             let keys = Array((currentWord!.valueForKey("examples") as! [String: String]).keys)
             let key = keys[indexPath.row - 2]
