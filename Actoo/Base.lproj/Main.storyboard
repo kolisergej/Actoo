@@ -190,9 +190,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WuM-QU-JZK">
-                                <rect key="frame" x="60" y="431" width="100" height="40"/>
+                                <rect key="frame" x="60" y="431" width="90" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="C9w-Uk-ifp"/>
+                                    <constraint firstAttribute="width" constant="90" id="C9w-Uk-ifp"/>
                                     <constraint firstAttribute="height" constant="40" id="gct-FV-WJv"/>
                                 </constraints>
                                 <state key="normal" title="I know"/>
@@ -224,9 +224,10 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hoP-mx-JVk">
-                                <rect key="frame" x="440" y="431" width="100" height="40"/>
+                                <rect key="frame" x="450" y="431" width="90" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="hS7-VA-rpY"/>
+                                    <constraint firstAttribute="width" constant="90" id="hS7-VA-rpY"/>
+                                    <constraint firstAttribute="height" constant="40" id="vxq-He-Mjv"/>
                                 </constraints>
                                 <state key="normal" title="I forgot"/>
                                 <connections>
@@ -246,13 +247,6 @@ Add them with translating</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2mh-IS-AUU">
-                                <rect key="frame" x="281" y="441" width="38" height="30"/>
-                                <state key="normal" title="Got it"/>
-                                <connections>
-                                    <action selector="gotItBtnPressed:" destination="Gna-ma-X8f" eventType="touchUpInside" id="cqY-bz-viq"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Provided via Yandex dictionary API" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eq8-Ew-9Df">
                                 <rect key="frame" x="382" y="530" width="198" height="21"/>
                                 <constraints>
@@ -263,6 +257,17 @@ Add them with translating</string>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2mh-IS-AUU">
+                                <rect key="frame" x="255" y="431" width="90" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="0WA-CF-Nt5"/>
+                                    <constraint firstAttribute="height" constant="40" id="mti-cN-klO"/>
+                                </constraints>
+                                <state key="normal" title="Got it"/>
+                                <connections>
+                                    <action selector="gotItBtnPressed:" destination="Gna-ma-X8f" eventType="touchUpInside" id="cqY-bz-viq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>

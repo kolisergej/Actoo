@@ -34,6 +34,18 @@ class ReminderViewController: UIViewController {
         reminderTableView.dataSource = tableViewBehavior
         reminderTableView.delegate = tableViewBehavior
         reminderTableView.separatorColor = UIColor.clearColor()
+        
+        forgotBtn.layer.borderWidth = 1
+        knowBtn.layer.borderWidth = 1
+        gotItBtn.layer.borderWidth = 1
+        
+        forgotBtn.layer.cornerRadius = 5
+        knowBtn.layer.cornerRadius = 5
+        gotItBtn.layer.cornerRadius = 5
+        
+        forgotBtn.layer.borderColor = view.tintColor.CGColor
+        knowBtn.layer.borderColor = view.tintColor.CGColor
+        gotItBtn.layer.borderColor = view.tintColor.CGColor
     }
     
     override func viewWillAppear(animated: Bool) {

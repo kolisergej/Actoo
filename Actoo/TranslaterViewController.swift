@@ -106,14 +106,17 @@ class TranslaterViewController: UIViewController {
             tableViewBehavior.currentWord = nil
             resultTableView.reloadData()
             let waitVc = UIAlertController(title: yandexHeaderService, message: nil, preferredStyle: .Alert)
-            let indicator = UIActivityIndicatorView(frame: waitVc.view.bounds)
-            indicator.activityIndicatorViewStyle = .Gray
-            indicator.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-            waitVc.view.addSubview(indicator)
+            let spinner = UIActivityIndicatorView(frame: waitVc.view.bounds)
+            spinner.activityIndicatorViewStyle = .Gray
+            spinner.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            spinner.userInteractionEnabled = false
+            spinner.center = CGPointMake(waitVc.view.bounds.midX, waitVc.view.bounds.midY + 10)
+            waitVc.view.addSubview(spinner)
             waitVc.addAction(UIAlertAction(title: "Cancel", style: .Cancel) {[unowned self] (UIAlertAction) -> Void in
                 self.currentTranslateRequest?.cancel()
                 })
-            indicator.startAnimating()
+            
+            spinner.startAnimating()
             presentViewController(waitVc, animated: true, completion: nil)
             
             currentTranslateRequest = NSURLSession.sharedSession().dataTaskWithRequest(NSURLRequest(URL: url)) {data, response, error in
