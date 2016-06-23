@@ -8,17 +8,13 @@
 
 
 import UIKit
+import CoreData
 
 class TranslaterViewController: UIViewController {
     
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     var languageDirections = [String: [String]]()
     var tableViewBehavior = TranslaterTableViewBehavior()
-    var words = [Word]() {
-        didSet {
-            appDelegate.words = words
-        }
-    }
     var currentTranslateRequest: NSURLSessionTask?
     
     @IBOutlet weak var fromLngBtn: UIButton!
@@ -76,8 +72,6 @@ class TranslaterViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        words = appDelegate.words
-
         setTabBarVisible(true, viewController: self)
     }
     
@@ -92,15 +86,18 @@ class TranslaterViewController: UIViewController {
                 return
             }
             
+            let words = appDelegate.words
+            // TODO fetch with params
             for index in 0 ..< words.count {
-                if words[index].origWord == trimmedString && words[index].fromLng == fromLngBtn.currentAttributedTitle?.string && words[index].toLng == toLngBtn.currentAttributedTitle?.string {
-                    words[index].rating += 1
-                    appDelegate.words = words
+                if (words[index].valueForKey("origWord") as! String) == trimmedString && (words[index].valueForKey("fromLng") as! String) == fromLngBtn.currentAttributedTitle?.string && (words[index].valueForKey("toLng") as! String) == toLngBtn.currentAttributedTitle?.string {
+                    let rating = words[index].valueForKey("rating") as! Int
+                    words[index].setValue(rating + 1, forKey: "rating")
                     tableViewBehavior.currentWord = words[index]
                     resultTableView.reloadData()
                     return
                 }
             }
+            appDelegate.words = words
             
             let url = buildTranslateUrl()
             tableViewBehavior.currentWord = nil
@@ -131,8 +128,8 @@ class TranslaterViewController: UIViewController {
                         let json = JSON(data: data!)
                         if let word = self.handleTranslateNetworkAnswer(json) {
                             waitVc.dismissViewControllerAnimated(true) {[unowned self, word] in
-                                self.tableViewBehavior.currentWord = word
-                                self.words.append(word)
+                                let objectWord = self.appDelegate.saveWord(word)
+                                self.tableViewBehavior.currentWord = objectWord
                                 self.resultTableView.reloadData()
                             }
                         } else {

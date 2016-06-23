@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ReminderViewController: UIViewController {
 
@@ -20,11 +21,6 @@ class ReminderViewController: UIViewController {
     @IBOutlet weak var knowBtn: UIButton!
     var currentOriginIndex = Int()
     var tableViewBehavior = ReminderTableViewBehavior()
-    var words = [Word]() {
-        didSet {
-            appDelegate.words = words
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +45,7 @@ class ReminderViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        words = appDelegate.words
-        if !words.isEmpty {
+        if !appDelegate.words.isEmpty {
             initTextView.hidden = true
             tableViewBehavior.extendMode = false
             reminderTableView.hidden = false
@@ -82,16 +77,18 @@ class ReminderViewController: UIViewController {
         gotItBtn.hidden = true
         forgotBtn.hidden = false
         knowBtn.hidden = false
-        if !words.isEmpty {
+        if !appDelegate.words.isEmpty {
             tableViewBehavior.extendMode = false
             showWord()
         }
     }
     
     @IBAction func acceptBtnPressed(sender: AnyObject) {
+        let words = appDelegate.words
         if !words.isEmpty {
-            if words[currentOriginIndex].rating > 0 {
-                words[currentOriginIndex].rating -= 1
+            let rating = words[currentOriginIndex].valueForKey("rating") as! Int
+            if rating > 0 {
+                words[currentOriginIndex].setValue(rating - 1, forKey: "rating")
                 appDelegate.words = words
             }
             showWord()
@@ -99,8 +96,10 @@ class ReminderViewController: UIViewController {
     }
     
     @IBAction func rejectBtnPressed(sender: AnyObject) {
+        let words = appDelegate.words
         if !words.isEmpty {
-            words[currentOriginIndex].rating += 1
+            let rating = words[currentOriginIndex].valueForKey("rating") as! Int
+            words[currentOriginIndex].setValue(rating + 1, forKey: "rating")
             appDelegate.words = words
             forgotBtn.hidden = true
             knowBtn.hidden = true
@@ -112,6 +111,7 @@ class ReminderViewController: UIViewController {
     
     func showWord() {
         let index = currentOriginIndex
+        let words = appDelegate.words
         if words.count > 1 {
             while currentOriginIndex == index {
                 currentOriginIndex = RandomInt(min: 0, max: words.count - 1)

@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import CoreData
 import Foundation
 
 class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-    var currentWord: Word?
+    var currentWord: NSManagedObject?
     weak var translateController: TranslaterViewController!
     
     func textFieldShouldReturn(userText: UITextField) -> Bool {
@@ -20,25 +21,26 @@ class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentWord != nil ? (1 + currentWord!.examples.count) : 0
+        return currentWord != nil ? (1 + (currentWord!.valueForKey("examples") as! [String: String]).count) : 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TranslaterCell", forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
-            let title = currentWord!.trWord
+            let title = currentWord!.valueForKey("trWord") as! String
             var synonyms = ""
-            if !(currentWord!.syns.isEmpty) {
+            let syns = currentWord!.valueForKey("syns") as! [String]
+            if !syns.isEmpty {
                 synonyms += "; ";
-                for synonym in currentWord!.syns {
+                for synonym in syns {
                     synonyms += synonym + "; "
                 }
             }
             cell.textLabel?.text = title + synonyms
         } else {
-            let keys = Array(currentWord!.examples.keys)
+            let keys = Array((currentWord!.valueForKey("examples") as! [String: String]).keys)
             let key = keys[indexPath.row - 1]
-            cell.textLabel?.text = key + " - " + currentWord!.examples[key]!
+            cell.textLabel?.text = key + " - " + (currentWord!.valueForKey("examples") as! [String: String])[key]!
         }
         cell.selectionStyle = .None
         return cell
