@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
 
-    func saveWord(wordForSave: Word) -> NSManagedObject {
+    func addWord(wordForSave: Word) -> NSManagedObject {
         let entity = NSEntityDescription.entityForName("Word", inManagedObjectContext: managedObjectContext)
         let word = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
         word.setValue(wordForSave.origWord, forKey: "origWord")
@@ -59,8 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         word.setValue(wordForSave.fromLng, forKey: "fromLng")
         word.setValue(wordForSave.syns, forKey: "syns")
         word.setValue(wordForSave.toLng, forKey: "toLng")
-
-        try! managedObjectContext.save()
         words.append(word)
         return word
     }

@@ -89,7 +89,7 @@ class ReminderViewController: UIViewController {
             let rating = words[currentOriginIndex].valueForKey("rating") as! Int
             if rating > 0 {
                 words[currentOriginIndex].setValue(rating - 1, forKey: "rating")
-                appDelegate.words = words
+                appDelegate.saveContext()
             }
             showWord()
         }
@@ -100,7 +100,7 @@ class ReminderViewController: UIViewController {
         if !words.isEmpty {
             let rating = words[currentOriginIndex].valueForKey("rating") as! Int
             words[currentOriginIndex].setValue(rating + 1, forKey: "rating")
-            appDelegate.words = words
+            appDelegate.saveContext()
             forgotBtn.hidden = true
             knowBtn.hidden = true
             gotItBtn.hidden = false
