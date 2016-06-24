@@ -14,10 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var words = [NSManagedObject]()
+    var lng: NSManagedObject!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         loadWords()
+        loadLng()
         return true
     }
 
@@ -70,7 +72,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let results = fetchedResults {
             words = results
         } else {
-            print("Could not fetch")
+            print("Could not fetch words")
+        }
+    }
+    
+    func loadLng() {
+        let fetchRequest = NSFetchRequest(entityName:"Lng")
+        let fetchedResult = try! managedObjectContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+        
+        if let results = fetchedResult {
+            if !results.isEmpty {
+                lng = results[0]
+            } else {
+                let entity = NSEntityDescription.entityForName("Lng", inManagedObjectContext: managedObjectContext)
+                lng = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+                lng.setValue(defaultLngDirections, forKey: "directions")
+                lng.setValue("en", forKey: "fromLng")
+                lng.setValue("ru", forKey: "toLng")
+                saveContext()
+            }
+        } else {
+            print("Could not fetch lng")
         }
     }
     

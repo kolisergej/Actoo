@@ -30,7 +30,9 @@ class TranslaterViewController: UIViewController {
         let url = NSURL(string: supportedLanguagedUrl + extractedToken)!
         if let data = try? NSData(contentsOfURL: url, options: []) {
             let json = JSON(data: data).arrayValue
+            var forSave = [String]()
             for fromToLanguages in json {
+                forSave.append(fromToLanguages.stringValue)
                 let fromTo = fromToLanguages.stringValue.componentsSeparatedByString("-");
                 var toArray = languageDirections[fromTo[0]] ?? [];
                 if fromTo[0] != fromTo[1] {
@@ -38,13 +40,23 @@ class TranslaterViewController: UIViewController {
                     languageDirections[fromTo[0]] = toArray
                 }
             }
+            appDelegate.lng.setValue(forSave, forKey: "directions")
+            appDelegate.saveContext()
         } else {
+            let savedDirections = appDelegate.lng.valueForKey("directions") as! [String]
+            for fromToLanguages in savedDirections {
+                let fromTo = fromToLanguages.componentsSeparatedByString("-");
+                var toArray = languageDirections[fromTo[0]] ?? [];
+                if fromTo[0] != fromTo[1] {
+                    toArray.append(fromTo[1])
+                    languageDirections[fromTo[0]] = toArray
+                }
+            }
             showErrorController(title: connectionError, message: checkInternetConnection + "\n Actoo will use saved data.", view: parentViewController!)
         }
         
-        let defaultManager = NSUserDefaults.standardUserDefaults()
-        let fromLng = defaultManager.valueForKey("fromLng") as? String ?? "en"
-        let toLng = defaultManager.valueForKey("toLng") as? String ?? "ru"
+        let fromLng = appDelegate.lng.valueForKey("fromLng") as! String
+        let toLng = appDelegate.lng.valueForKey("toLng") as! String
         
         fromLngBtn.setImage(UIImage(named: fromLng), forState: .Normal)
         fromLngBtn.setAttributedTitle(NSAttributedString(string: fromLng), forState: .Normal)
@@ -186,9 +198,9 @@ class TranslaterViewController: UIViewController {
     }
     
     func saveLanguages() {
-        let defaultManager = NSUserDefaults.standardUserDefaults()
-        defaultManager.setValue(fromLngBtn.currentAttributedTitle!.string, forKey: "fromLng")
-        defaultManager.setValue(toLngBtn.currentAttributedTitle!.string, forKey: "toLng")
+        appDelegate.lng.setValue(fromLngBtn.currentAttributedTitle!.string, forKey: "fromLng")
+        appDelegate.lng.setValue(toLngBtn.currentAttributedTitle!.string, forKey: "toLng")
+        appDelegate.saveContext()
     }
     
     func getCurrentTokenIndex() -> String {
