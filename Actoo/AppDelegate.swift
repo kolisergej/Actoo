@@ -68,32 +68,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func loadWords() {
         let fetchRequest = NSFetchRequest(entityName:"Word")
-        let fetchedResults = try! managedObjectContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
-        
-        if let results = fetchedResults {
-            words = results
-        } else {
-            print("Could not fetch words")
-        }
+        words = try! managedObjectContext.executeFetchRequest(fetchRequest) as! [NSManagedObject]
     }
     
     func loadLng() {
         let fetchRequest = NSFetchRequest(entityName:"Lng")
-        let fetchedResult = try! managedObjectContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+        let results = try! managedObjectContext.executeFetchRequest(fetchRequest) as! [NSManagedObject]
         
-        if let results = fetchedResult {
-            if !results.isEmpty {
-                lng = results[0]
-            } else {
-                let entity = NSEntityDescription.entityForName("Lng", inManagedObjectContext: managedObjectContext)
-                lng = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
-                lng.setValue(defaultLngDirections, forKey: "directions")
-                lng.setValue("en", forKey: "fromLng")
-                lng.setValue("ru", forKey: "toLng")
-                saveContext()
-            }
+        if !results.isEmpty {
+            lng = results[0]
         } else {
-            print("Could not fetch lng")
+            let entity = NSEntityDescription.entityForName("Lng", inManagedObjectContext: managedObjectContext)
+            lng = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+            lng.setValue(defaultLngDirections, forKey: "directions")
+            lng.setValue("en", forKey: "fromLng")
+            lng.setValue("ru", forKey: "toLng")
+            saveContext()
         }
     }
     
