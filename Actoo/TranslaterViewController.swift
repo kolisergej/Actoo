@@ -85,8 +85,8 @@ class TranslaterViewController: UIViewController {
     func translate() {
         if let input = textForTranslate.text {
             let trimmedString = input.lowercaseString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            if trimmedString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).count > 1 {
-                showError(yandexHeaderService, message: "Put in one word")
+            if trimmedString.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).count > 2 {
+                showError(yandexHeaderService, message: "You can't add more than 2 words")
                 return
             } else if trimmedString.isEmpty {
                 showError(yandexHeaderService, message: "Put any word")
@@ -106,6 +106,7 @@ class TranslaterViewController: UIViewController {
             }
             
             let url = buildTranslateUrl()
+            print(url)
             tableViewBehavior.currentWord = nil
             resultTableView.reloadData()
             let waitVc = UIAlertController(title: yandexHeaderService, message: nil, preferredStyle: .Alert)
