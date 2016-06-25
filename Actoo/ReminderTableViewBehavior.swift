@@ -17,10 +17,36 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
         return currentWord != nil ? (extendMode ? 2 + (currentWord!.valueForKey("examples") as! [String: String]).count : 1) : 0
     }
     
+    func imageBorderedWithColor(image: UIImage) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale);
+        image.drawAtPoint(CGPointZero)
+        UIColor.grayColor().setStroke()
+        let path = UIBezierPath(rect: CGRectMake(0, 0, image.size.width, image.size.height))
+        path.lineWidth = 1
+        path.stroke()
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return result;
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ReminderCell", forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
-            cell.textLabel?.text = (currentWord!.valueForKey("origWord") as! String) + " (\((currentWord!.valueForKey("fromLng") as! String).capitalizedString)) -> (\((currentWord!.valueForKey("toLng") as! String).capitalizedString))"
+            let attachmentFromLng = NSTextAttachment()
+            attachmentFromLng.image = imageBorderedWithColor(UIImage(named: currentWord!.valueForKey("fromLng") as! String)!)
+
+            let attachmentToLng = NSTextAttachment()
+            attachmentToLng.image = imageBorderedWithColor(UIImage(named: currentWord!.valueForKey("toLng") as! String)!)
+            
+            let attachmentArrow = NSTextAttachment()
+            attachmentArrow.image = UIImage(named: "arrow")!
+            
+            let attributedString = NSMutableAttributedString(string: (currentWord!.valueForKey("origWord") as! String) + "\n\n")
+            attributedString.appendAttributedString(NSAttributedString(attachment: attachmentFromLng))
+            attributedString.appendAttributedString(NSAttributedString(attachment: attachmentArrow))
+            attributedString.appendAttributedString(NSAttributedString(attachment: attachmentToLng))
+            
+            cell.textLabel?.attributedText = attributedString
             cell.textLabel?.textAlignment = .Center
         }
         else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
@@ -33,11 +59,11 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
                     synonyms += synonym + "; "
                 }
             }
-            cell.textLabel?.text = title + synonyms //+ "\(currentWord!.valueForKey("rating") as! Int)"
+            cell.textLabel?.attributedText = NSAttributedString(string: title + synonyms)
         } else {
             let keys = Array((currentWord!.valueForKey("examples") as! [String: String]).keys)
             let key = keys[indexPath.row - 2]
-            cell.textLabel?.text = key + " - " + (currentWord!.valueForKey("examples") as! [String: String])[key]!
+            cell.textLabel?.attributedText = NSAttributedString(string: key + " - " + (currentWord!.valueForKey("examples") as! [String: String])[key]!)
         }
         cell.selectionStyle = .None
         return cell
