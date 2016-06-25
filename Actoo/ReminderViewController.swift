@@ -96,27 +96,28 @@ class ReminderViewController: UIViewController {
         knowBtn.hidden = false
         if !appDelegate.words.isEmpty {
             tableViewBehavior.extendMode = false
+            incrementCurrentIndex()
             showWord()
         }
     }
     
     @IBAction func acceptBtnPressed(sender: AnyObject) {
-        let words = appDelegate.words
-        if !words.isEmpty {
-            let rating = words[currentOriginIndex].valueForKey("rating") as! Int
+        if !sessionWords.isEmpty {
+            let rating = sessionWords[currentOriginIndex].valueForKey("rating") as! Int
             if rating > 0 {
-                words[currentOriginIndex].setValue(rating - 1, forKey: "rating")
+                sessionWords[currentOriginIndex].setValue(rating - 1, forKey: "rating")
                 appDelegate.saveContext()
             }
+            
+            incrementCurrentIndex()
             showWord()
         }
     }
     
     @IBAction func rejectBtnPressed(sender: AnyObject) {
-        let words = appDelegate.words
-        if !words.isEmpty {
-            let rating = words[currentOriginIndex].valueForKey("rating") as! Int
-            words[currentOriginIndex].setValue(rating + 1, forKey: "rating")
+        if !sessionWords.isEmpty {
+            let rating = sessionWords[currentOriginIndex].valueForKey("rating") as! Int
+            sessionWords[currentOriginIndex].setValue(rating + 1, forKey: "rating")
             appDelegate.saveContext()
             forgotBtn.hidden = true
             knowBtn.hidden = true
@@ -126,7 +127,7 @@ class ReminderViewController: UIViewController {
         }
     }
     
-    func showWord() {
+    func incrementCurrentIndex() {
         if sessionWords.count > 1 {
             if currentOriginIndex < sessionWords.count - 1 {
                 currentOriginIndex += 1
@@ -134,9 +135,11 @@ class ReminderViewController: UIViewController {
                 resetSessionWords()
             }
         }
+    }
+    
+    func showWord() {
         tableViewBehavior.currentWord = sessionWords[currentOriginIndex]
         reminderTableView.reloadData()
-        print(sessionWords)
     }
     
     func RandomInt(min min: Int, max: Int) -> Int {

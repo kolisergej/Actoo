@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import GameplayKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -98,18 +99,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func sessionWords(count: Int) -> [NSManagedObject] {
         let fetchRequest = NSFetchRequest(entityName: "Word")
-        fetchRequest.fetchLimit = count
         let sort = NSSortDescriptor(key: "rating", ascending: false)
+        fetchRequest.fetchLimit = count
         fetchRequest.sortDescriptors = [sort]
+        let fetchedResults = try! managedObjectContext.executeFetchRequest(fetchRequest) as! [NSManagedObject]
+        let rating = fetchedResults.last!.valueForKey("rating") as! Int
         
-        let fetchedResults = try! managedObjectContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
-        var words = [NSManagedObject]()
-        if let _ = fetchedResults {
-            words = fetchedResults!
-        } else {
-            print("Could not fetch session words")
+        let firstPartFetchRequest = NSFetchRequest(entityName: "Word")
+        let predicate = NSPredicate(format: "%K > %i", "rating", rating)
+        firstPartFetchRequest.sortDescriptors = [sort]
+        firstPartFetchRequest.predicate = predicate
+        var firstPart = try! managedObjectContext.executeFetchRequest(firstPartFetchRequest) as! [NSManagedObject]
+        
+        let secondPartFetchRequest = NSFetchRequest(entityName: "Word")
+        let predicate2 = NSPredicate(format: "%K == %i", "rating", rating)
+        secondPartFetchRequest.predicate = predicate2
+        var secondPart = try! managedObjectContext.executeFetchRequest(secondPartFetchRequest) as! [NSManagedObject]
+        secondPart = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(secondPart) as! [NSManagedObject]
+        for i in 0 ..< secondPart.count {
+            if firstPart.count == count {
+                break;
+            }
+            firstPart.append(secondPart[i])
         }
-        return words
+        return firstPart
     }
     
     
