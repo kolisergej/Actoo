@@ -41,7 +41,7 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
             let attachmentArrow = NSTextAttachment()
             attachmentArrow.image = UIImage(named: "arrow")!
             
-            let attributedString = NSMutableAttributedString(string: (currentWord!.valueForKey("origWord") as! String) + "\n\n")
+            let attributedString = NSMutableAttributedString(string: (currentWord!.valueForKey("origWord") as! String) + " ")
             attributedString.appendAttributedString(NSAttributedString(attachment: attachmentFromLng))
             attributedString.appendAttributedString(NSAttributedString(attachment: attachmentArrow))
             attributedString.appendAttributedString(NSAttributedString(attachment: attachmentToLng))
@@ -64,6 +64,7 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
             let keys = Array((currentWord!.valueForKey("examples") as! [String: String]).keys)
             let key = keys[indexPath.row - 2]
             cell.textLabel?.attributedText = NSAttributedString(string: key + " - " + (currentWord!.valueForKey("examples") as! [String: String])[key]!)
+            cell.textLabel?.textAlignment = .Left
         }
         cell.selectionStyle = .None
         return cell
