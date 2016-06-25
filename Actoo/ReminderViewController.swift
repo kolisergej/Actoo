@@ -19,8 +19,9 @@ class ReminderViewController: UIViewController {
     @IBOutlet weak var forgotBtn: UIButton!
     @IBOutlet weak var gotItBtn: UIButton!
     @IBOutlet weak var knowBtn: UIButton!
-    var currentOriginIndex = Int()
     var tableViewBehavior = ReminderTableViewBehavior()
+    var sessionWords = [NSManagedObject]()
+    var currentOriginIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +45,24 @@ class ReminderViewController: UIViewController {
         gotItBtn.layer.borderColor = view.tintColor.CGColor
     }
     
+    func resetSessionWords() {
+        currentOriginIndex = 0
+        var sessionWordsSize = 0
+        if appDelegate.words.count < 15 {
+            sessionWordsSize = 5
+        } else if appDelegate.words.count < 30 {
+            sessionWordsSize = 15
+        } else {
+            sessionWordsSize = 30
+        }
+        sessionWords = appDelegate.sessionWords(sessionWordsSize)
+    }
+    
     override func viewWillAppear(animated: Bool) {
         if !appDelegate.words.isEmpty {
+            
+            resetSessionWords()
+            
             initTextView.hidden = true
             tableViewBehavior.extendMode = false
             reminderTableView.hidden = false
@@ -110,15 +127,16 @@ class ReminderViewController: UIViewController {
     }
     
     func showWord() {
-        let index = currentOriginIndex
-        let words = appDelegate.words
-        if words.count > 1 {
-            while currentOriginIndex == index {
-                currentOriginIndex = RandomInt(min: 0, max: words.count - 1)
+        if sessionWords.count > 1 {
+            if currentOriginIndex < sessionWords.count - 1 {
+                currentOriginIndex += 1
+            } else {
+                resetSessionWords()
             }
         }
-        tableViewBehavior.currentWord = words[currentOriginIndex]
+        tableViewBehavior.currentWord = sessionWords[currentOriginIndex]
         reminderTableView.reloadData()
+        print(sessionWords)
     }
     
     func RandomInt(min min: Int, max: Int) -> Int {

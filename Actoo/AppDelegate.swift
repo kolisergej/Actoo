@@ -96,6 +96,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    func sessionWords(count: Int) -> [NSManagedObject] {
+        let fetchRequest = NSFetchRequest(entityName: "Word")
+        fetchRequest.fetchLimit = count
+        let sort = NSSortDescriptor(key: "rating", ascending: false)
+        fetchRequest.sortDescriptors = [sort]
+        
+        let fetchedResults = try! managedObjectContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+        var words = [NSManagedObject]()
+        if let _ = fetchedResults {
+            words = fetchedResults!
+        } else {
+            print("Could not fetch session words")
+        }
+        return words
+    }
+    
     
     // MARK: - Core Data stack
     
