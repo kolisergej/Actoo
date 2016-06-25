@@ -106,7 +106,6 @@ class TranslaterViewController: UIViewController {
             }
             
             let url = buildTranslateUrl()
-            print(url)
             tableViewBehavior.currentWord = nil
             resultTableView.reloadData()
             let waitVc = UIAlertController(title: yandexHeaderService, message: nil, preferredStyle: .Alert)
