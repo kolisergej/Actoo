@@ -95,7 +95,7 @@ class TranslaterViewController: UIViewController {
             
             let words = appDelegate.words
             for index in 0 ..< words.count {
-                if (words[index].valueForKey("origWord") as! String) == trimmedString && (words[index].valueForKey("fromLng") as! String) == fromLngBtn.currentAttributedTitle?.string && (words[index].valueForKey("toLng") as! String) == toLngBtn.currentAttributedTitle?.string {
+                if (words[index].valueForKey("origWord") as! String) == trimmedString && (words[index].valueForKey("fromLng") as! String) == fromLngBtn.currentAttributedTitle!.string && (words[index].valueForKey("toLng") as! String) == toLngBtn.currentAttributedTitle!.string {
                     let rating = words[index].valueForKey("rating") as! Int
                     words[index].setValue(rating + 1, forKey: "rating")
                     tableViewBehavior.currentWord = words[index]
@@ -168,7 +168,7 @@ class TranslaterViewController: UIViewController {
             for example in examplesAnswer {
                 examples[example["text"].stringValue] = example["tr"][0]["text"].stringValue
             }
-            return Word(origWord: origWord, fromLng: fromLngBtn.currentAttributedTitle!.string, trWord: tr, toLng: toLngBtn.currentAttributedTitle!.string, syns: synonims, examples: examples, rating: 1)
+            return Word(origWord: origWord.lowercaseString, fromLng: fromLngBtn.currentAttributedTitle!.string, trWord: tr, toLng: toLngBtn.currentAttributedTitle!.string, syns: synonims, examples: examples, rating: 1)
         }
         return nil
     }
