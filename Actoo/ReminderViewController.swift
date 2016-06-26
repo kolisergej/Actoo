@@ -27,62 +27,35 @@ class ReminderViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         navigationItem.title = "Reminder"
+        configureStartGeneralUI()
         
-        reminderTableView.dataSource = tableViewBehavior
-        reminderTableView.delegate = tableViewBehavior
-        reminderTableView.separatorColor = UIColor.clearColor()
+        let areThereWords = appDelegate.words.isEmpty
         
-        forgotBtn.layer.borderWidth = 1
-        knowBtn.layer.borderWidth = 1
-        gotItBtn.layer.borderWidth = 1
+        forgotBtn.hidden = !areThereWords
+        knowBtn.hidden = !areThereWords
+        initTextView.hidden = areThereWords
+        reminderTableView.hidden = !areThereWords
         
-        forgotBtn.layer.cornerRadius = 5
-        knowBtn.layer.cornerRadius = 5
-        gotItBtn.layer.cornerRadius = 5
-        
-        forgotBtn.layer.borderColor = view.tintColor.CGColor
-        knowBtn.layer.borderColor = view.tintColor.CGColor
-        gotItBtn.layer.borderColor = view.tintColor.CGColor
-    }
-    
-    func resetSessionWords() {
-        currentOriginIndex = 0
-        var sessionWordsSize = 0
-        if appDelegate.words.count < 15 {
-            sessionWordsSize = 5
-        } else if appDelegate.words.count < 30 {
-            sessionWordsSize = 15
-        } else {
-            sessionWordsSize = 30
+        if areThereWords {
+            resetSessionWords()
+            showWord()
         }
-        sessionWords = appDelegate.sessionWords(sessionWordsSize)
+        
+        tableViewBehavior.extendMode = false
     }
     
     override func viewWillAppear(animated: Bool) {
         if !appDelegate.words.isEmpty {
-            
-            resetSessionWords()
-            
             initTextView.hidden = true
-            tableViewBehavior.extendMode = false
             reminderTableView.hidden = false
-            showWord()
-        } else {
-            forgotBtn.hidden = true
-            knowBtn.hidden = true
-            initTextView.hidden = false
-            reminderTableView.hidden = true
+            if tableViewBehavior.currentWord == nil {
+                forgotBtn.hidden = false
+                knowBtn.hidden = false
+                gotItBtn.hidden = true
+                resetSessionWords()
+                showWord()
+            }
         }
-        gotItBtn.hidden = true
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        tableViewBehavior.currentWord = nil
-        gotItBtn.hidden = true
-        forgotBtn.hidden = false
-        knowBtn.hidden = false
-        tableViewBehavior.extendMode = false
-        reminderTableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -127,6 +100,19 @@ class ReminderViewController: UIViewController {
         }
     }
     
+    func resetSessionWords() {
+        currentOriginIndex = 0
+        var sessionWordsSize = 0
+        if appDelegate.words.count < 15 {
+            sessionWordsSize = 5
+        } else if appDelegate.words.count < 30 {
+            sessionWordsSize = 15
+        } else {
+            sessionWordsSize = 30
+        }
+        sessionWords = appDelegate.sessionWords(sessionWordsSize)
+    }
+    
     func incrementCurrentIndex() {
         if sessionWords.count > 1 {
             if currentOriginIndex < sessionWords.count - 1 {
@@ -145,6 +131,26 @@ class ReminderViewController: UIViewController {
     func RandomInt(min min: Int, max: Int) -> Int {
         if max < min { return min }
         return Int(arc4random_uniform(UInt32((max - min) + 1))) + min
+    }
+    
+    func configureStartGeneralUI() {
+        reminderTableView.dataSource = tableViewBehavior
+        reminderTableView.delegate = tableViewBehavior
+        reminderTableView.separatorColor = UIColor.clearColor()
+        
+        forgotBtn.layer.borderWidth = 1
+        knowBtn.layer.borderWidth = 1
+        gotItBtn.layer.borderWidth = 1
+        
+        forgotBtn.layer.cornerRadius = 5
+        knowBtn.layer.cornerRadius = 5
+        gotItBtn.layer.cornerRadius = 5
+        
+        forgotBtn.layer.borderColor = view.tintColor.CGColor
+        knowBtn.layer.borderColor = view.tintColor.CGColor
+        gotItBtn.layer.borderColor = view.tintColor.CGColor
+        
+        gotItBtn.hidden = true
     }
     
     /*
