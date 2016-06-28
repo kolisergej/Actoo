@@ -29,7 +29,7 @@ class ReminderViewController: UIViewController {
         navigationItem.title = "Reminder"
         configureStartGeneralUI()
         
-        let areThereWords = appDelegate.words.isEmpty
+        let areThereWords = !appDelegate.words.isEmpty
         
         forgotBtn.hidden = !areThereWords
         knowBtn.hidden = !areThereWords
@@ -120,6 +120,8 @@ class ReminderViewController: UIViewController {
             } else {
                 resetSessionWords()
             }
+        } else {
+            resetSessionWords()
         }
     }
     
