@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import GameplayKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -105,7 +104,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let predicate2 = NSPredicate(format: "%K == %i", "rating", rating)
         secondPartFetchRequest.predicate = predicate2
         var secondPart = try! managedObjectContext.executeFetchRequest(secondPartFetchRequest) as! [NSManagedObject]
-        secondPart = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(secondPart) as! [NSManagedObject]
+
+        let size = secondPart.count - 1
+        if size > 1 {
+            for i in (0...size).reverse() {
+                let tmp = secondPart[i]
+                let randomIndex = Int(arc4random_uniform(UInt32(i + 1)))
+                secondPart[i] = secondPart[randomIndex]
+                secondPart[randomIndex] = tmp
+            }
+        }
+        
         for i in 0 ..< secondPart.count {
             if firstPart.count == count {
                 break;
@@ -114,7 +123,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return firstPart
     }
-    
     
     // MARK: - Core Data stack
     
