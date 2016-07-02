@@ -151,6 +151,7 @@
                     <connections>
                         <segue destination="Gsm-ck-OYO" kind="relationship" relationship="viewControllers" id="wg8-Dl-HN8"/>
                         <segue destination="vDb-jI-5Ja" kind="relationship" relationship="viewControllers" id="4WM-XM-gVl"/>
+                        <segue destination="w5V-lR-Aul" kind="relationship" relationship="viewControllers" id="f8m-Kb-paN"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MZs-IB-MvA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -161,7 +162,7 @@
         <scene sceneID="2he-3C-K3e">
             <objects>
                 <navigationController title="Translater navigation" automaticallyAdjustsScrollViewInsets="NO" id="Gsm-ck-OYO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="search" id="0Bg-CP-fDX"/>
+                    <tabBarItem key="tabBarItem" title="" systemItem="search" id="0Bg-CP-fDX"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="13K-fZ-Bqf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -299,6 +300,58 @@ Add them with translating</string>
             </objects>
             <point key="canvasLocation" x="1929" y="1132"/>
         </scene>
+        <!--WordList-->
+        <scene sceneID="DQh-gB-15E">
+            <objects>
+                <tableViewController title="WordList" id="D8d-GP-rK6" customClass="WordsListViewController" customModule="Actoo" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ixZ-bP-82R">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WordListCell" textLabel="S7e-2m-UMC" detailTextLabel="MJh-RV-ldZ" style="IBUITableViewCellStyleValue1" id="TFK-7k-kFA">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TFK-7k-kFA" id="0Vt-Wj-Nf2">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="S7e-2m-UMC">
+                                            <rect key="frame" x="15" y="11" width="36" height="22.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
+                                            <color key="textColor" white="0.0" alpha="1" colorSpace="deviceWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" id="MJh-RV-ldZ">
+                                            <rect key="frame" x="544" y="14" width="41" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="Detail">
+                                                    <attributes>
+                                                        <color key="NSColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <font key="NSFont" size="16" name="HelveticaNeue"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="D8d-GP-rK6" id="jq0-Oq-gZa"/>
+                            <outlet property="delegate" destination="D8d-GP-rK6" id="Tfz-Gb-mfX"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Pgg-Zb-zWN"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y37-ww-Zid" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1929" y="1855"/>
+        </scene>
         <!--Country View Controller-->
         <scene sceneID="MqY-Ec-bFW">
             <objects>
@@ -353,7 +406,7 @@ Add them with translating</string>
         <scene sceneID="k3l-Kw-eil">
             <objects>
                 <navigationController title="Reminder navigation" automaticallyAdjustsScrollViewInsets="NO" id="vDb-jI-5Ja" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="PwC-Mf-9rN"/>
+                    <tabBarItem key="tabBarItem" systemItem="recents" id="PwC-Mf-9rN"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bNb-u2-jGR">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -367,6 +420,25 @@ Add them with translating</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2wz-Xl-Mdh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1147" y="1132"/>
+        </scene>
+        <!--WordList Navigation-->
+        <scene sceneID="Fpd-aY-Hva">
+            <objects>
+                <navigationController title="WordList Navigation" automaticallyAdjustsScrollViewInsets="NO" id="w5V-lR-Aul" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" systemItem="favorites" id="3E9-VS-cTJ"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ktM-2I-J5R">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="D8d-GP-rK6" kind="relationship" relationship="rootViewController" id="ahr-GN-BMO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QMj-7p-kjy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1147" y="1855"/>
         </scene>
     </scenes>
     <resources>

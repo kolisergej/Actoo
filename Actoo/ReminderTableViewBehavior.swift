@@ -17,18 +17,6 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
         return currentWord != nil ? (extendMode ? 2 + (currentWord!.valueForKey("examples") as! [String: String]).count : 1) : 0
     }
     
-    func imageBorderedWithColor(image: UIImage) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale);
-        image.drawAtPoint(CGPointZero)
-        UIColor.grayColor().setStroke()
-        let path = UIBezierPath(rect: CGRectMake(0, 0, image.size.width, image.size.height))
-        path.lineWidth = 1
-        path.stroke()
-        let result = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
-        return result;
-    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ReminderCell", forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {

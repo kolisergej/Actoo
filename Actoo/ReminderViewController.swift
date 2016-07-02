@@ -22,6 +22,7 @@ class ReminderViewController: UIViewController {
     var tableViewBehavior = ReminderTableViewBehavior()
     var sessionWords = [NSManagedObject]()
     var currentOriginIndex = 0
+    var needToReset = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,13 +49,19 @@ class ReminderViewController: UIViewController {
         if !appDelegate.words.isEmpty {
             initTextView.hidden = true
             reminderTableView.hidden = false
-            if tableViewBehavior.currentWord == nil {
+            if tableViewBehavior.currentWord == nil || needToReset {
+                needToReset = false
                 forgotBtn.hidden = false
                 knowBtn.hidden = false
                 gotItBtn.hidden = true
                 resetSessionWords()
                 showWord()
             }
+        } else {
+            forgotBtn.hidden = true
+            knowBtn.hidden = true
+            initTextView.hidden = false
+            reminderTableView.hidden = true
         }
     }
 

@@ -135,3 +135,15 @@ func setTabBarVisible(visible: Bool, viewController: UIViewController) {
 func tabBarIsVisible(viewController: UIViewController) -> Bool {
     return viewController.tabBarController?.tabBar.frame.origin.y < CGRectGetMaxY(viewController.view.frame)
 }
+
+func imageBorderedWithColor(image: UIImage) -> UIImage {
+    UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale);
+    image.drawAtPoint(CGPointZero)
+    UIColor.grayColor().setStroke()
+    let path = UIBezierPath(rect: CGRectMake(0, 0, image.size.width, image.size.height))
+    path.lineWidth = 1
+    path.stroke()
+    let result = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext();
+    return result;
+}
