@@ -18,7 +18,7 @@ class WordsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dictionaryTableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
+        dictionaryTableView.contentInset = UIEdgeInsetsMake(-36, 0, 36, 0);
         initTextView = addInitTextView(view)
 
         // Uncomment the following line to preserve selection between presentations
@@ -114,7 +114,7 @@ class WordsListViewController: UIViewController, UITableViewDelegate, UITableVie
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {

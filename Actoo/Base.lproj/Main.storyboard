@@ -299,9 +299,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Cdt-fh-arR">
                                 <rect key="frame" x="20" y="72" width="560" height="444"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="444" id="LLc-GA-38c"/>
-                                </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DictionaryCell" textLabel="2XM-OY-FLR" detailTextLabel="GOI-Kp-g4X" style="IBUITableViewCellStyleValue1" id="a8h-Pq-26K">
                                         <rect key="frame" x="0.0" y="92" width="560" height="44"/>
@@ -346,6 +343,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Cdt-fh-arR" secondAttribute="trailing" id="UFO-zP-KTE"/>
                             <constraint firstItem="Cdt-fh-arR" firstAttribute="top" secondItem="rOP-mJ-lbo" secondAttribute="bottom" constant="8" id="bJN-If-GFG"/>
                             <constraint firstAttribute="trailingMargin" secondItem="DSQ-va-iXU" secondAttribute="trailing" id="dKD-ZJ-Zos"/>
+                            <constraint firstItem="sFo-XP-r2E" firstAttribute="top" secondItem="Cdt-fh-arR" secondAttribute="bottom" constant="35" id="ium-qL-phV"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Cdt-fh-arR" secondAttribute="leading" id="rbE-cJ-iiK"/>
                         </constraints>
                     </view>

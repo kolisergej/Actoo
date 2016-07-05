@@ -217,7 +217,6 @@ class TranslaterViewController: UIViewController {
         performSegueWithIdentifier("showLanguages", sender: "toLng")
     }
     
-
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showLanguages" {
             let senderButtonId = sender as! String
