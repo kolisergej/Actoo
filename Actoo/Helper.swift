@@ -147,3 +147,19 @@ func imageBorderedWithColor(image: UIImage) -> UIImage {
     UIGraphicsEndImageContext();
     return result;
 }
+
+func addInitTextView(view: UIView) -> UITextView {
+    let initTextView = UITextView()
+    view.addSubview(initTextView)
+    let width = CGFloat(280)
+    let height = CGFloat(65)
+    initTextView.layer.frame = CGRectMake(view.center.x - CGFloat(width / 2), view.center.y - 30 - CGFloat(height / 2), width, height)
+    initTextView.text = "No words to remind.\nAdd them with translating"
+    initTextView.selectable = false
+    initTextView.editable = false
+    initTextView.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: ["name" : "System"]), size: 20)
+    initTextView.textAlignment = .Center
+    initTextView.textColor = UIColor.grayColor()
+    
+    return initTextView
+}

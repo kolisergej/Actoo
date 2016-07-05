@@ -8,13 +8,18 @@
 
 import UIKit
 
-class WordsListViewController: UITableViewController {
+class WordsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     weak var reminderViewController: ReminderViewController!
+    var initTextView: UITextView!
+    
+    @IBOutlet weak var dictionaryTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        dictionaryTableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
+        initTextView = addInitTextView(view)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -22,12 +27,21 @@ class WordsListViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         navigationItem.title = "Dictionary"
+        dictionaryTableView.delegate = self
+        dictionaryTableView.dataSource = self
         
         reminderViewController = appDelegate.window?.rootViewController?.childViewControllers[1].childViewControllers[0] as! ReminderViewController
     }
     
     override func viewWillAppear(animated: Bool) {
-        tableView.reloadData()
+        if appDelegate.words.isEmpty {
+            initTextView.hidden = false
+            dictionaryTableView.hidden = true
+        } else {
+            initTextView.hidden = true
+            dictionaryTableView.hidden = false
+            dictionaryTableView.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,16 +51,16 @@ class WordsListViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return appDelegate.words.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("WordListCell", forIndexPath: indexPath)
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("DictionaryCell", forIndexPath: indexPath)
         let currentWord = appDelegate.words[indexPath.row]
         
         let attachmentFromLng = NSTextAttachment()
@@ -70,11 +84,11 @@ class WordsListViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 
@@ -87,13 +101,17 @@ class WordsListViewController: UITableViewController {
     */
 
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             appDelegate.managedObjectContext.deleteObject(appDelegate.words[indexPath.row])
             appDelegate.saveContext()
             appDelegate.words.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             reminderViewController.needToReset = true
+            if appDelegate.words.isEmpty {
+                initTextView.hidden = false
+                dictionaryTableView.hidden = true
+            }
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    

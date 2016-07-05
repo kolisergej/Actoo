@@ -14,12 +14,12 @@ class ReminderViewController: UIViewController {
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     
     @IBOutlet weak var reminderTableView: UITableView!
-    @IBOutlet weak var initTextView: UITextView!
-    
     @IBOutlet weak var forgotBtn: UIButton!
     @IBOutlet weak var gotItBtn: UIButton!
     @IBOutlet weak var knowBtn: UIButton!
+    
     var tableViewBehavior = ReminderTableViewBehavior()
+    var initTextView: UITextView!
     var sessionWords = [NSManagedObject]()
     var currentOriginIndex = 0
     var needToReset = false
@@ -28,10 +28,11 @@ class ReminderViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         navigationItem.title = "Reminder"
-        configureStartGeneralUI()
+        configureUIOnLoad()
+        
+        initTextView = addInitTextView(view)
         
         let areThereWords = !appDelegate.words.isEmpty
-        
         forgotBtn.hidden = !areThereWords
         knowBtn.hidden = !areThereWords
         initTextView.hidden = areThereWords
@@ -142,7 +143,7 @@ class ReminderViewController: UIViewController {
         return Int(arc4random_uniform(UInt32((max - min) + 1))) + min
     }
     
-    func configureStartGeneralUI() {
+    func configureUIOnLoad() {
         reminderTableView.dataSource = tableViewBehavior
         reminderTableView.delegate = tableViewBehavior
         reminderTableView.separatorColor = UIColor.clearColor()
