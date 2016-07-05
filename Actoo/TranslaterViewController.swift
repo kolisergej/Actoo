@@ -31,13 +31,20 @@ class TranslaterViewController: UIViewController {
         if let data = try? NSData(contentsOfURL: url, options: []) {
             let json = JSON(data: data).arrayValue
             var forSave = [String]()
+            
+            let fm = NSFileManager.defaultManager()
+            let path = NSBundle.mainBundle().resourcePath!
+            let items = try! fm.contentsOfDirectoryAtPath(path)
+            
             for fromToLanguages in json {
-                forSave.append(fromToLanguages.stringValue)
                 let fromTo = fromToLanguages.stringValue.componentsSeparatedByString("-");
-                var toArray = languageDirections[fromTo[0]] ?? [];
-                if fromTo[0] != fromTo[1] {
-                    toArray.append(fromTo[1])
-                    languageDirections[fromTo[0]] = toArray
+                if items.contains(fromTo[0] + ".png") && items.contains(fromTo[1] + ".png") {
+                    var toArray = languageDirections[fromTo[0]] ?? [];
+                    forSave.append(fromToLanguages.stringValue)
+                    if fromTo[0] != fromTo[1] {
+                        toArray.append(fromTo[1])
+                        languageDirections[fromTo[0]] = toArray
+                    }
                 }
             }
             appDelegate.lng.setValue(forSave, forKey: "directions")
