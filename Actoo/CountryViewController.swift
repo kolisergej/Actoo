@@ -12,19 +12,15 @@ private let reuseIdentifier = "CountryCell"
 
 class CountryViewController: UICollectionViewController {
 
-    var countries = [Country]()
     weak var delegate: TranslaterViewController!
+    var countries = [Country]()
     var isFromCalled = true
     var currentCellIndex: NSIndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
         collectionView!.backgroundColor = UIColor.whiteColor()
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -56,9 +52,7 @@ class CountryViewController: UICollectionViewController {
         cell.layer.borderWidth = 0
         if (isFromCalled && country.flagImage == delegate.fromLngBtn.currentAttributedTitle?.string) ||
             (!isFromCalled && country.flagImage == delegate.toLngBtn.currentAttributedTitle?.string) {
-            cell.layer.cornerRadius = 7
-            cell.layer.borderWidth = 5
-            cell.layer.borderColor = view.tintColor.CGColor
+            distinguishCell(cell)
             currentCellIndex = indexPath
         }
         
@@ -92,9 +86,7 @@ class CountryViewController: UICollectionViewController {
                 currentCell?.layer.borderWidth = 0
             }
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! CountryCell
-            cell.layer.cornerRadius = 7
-            cell.layer.borderWidth = 5
-            cell.layer.borderColor = self.view.tintColor.CGColor
+            self.distinguishCell(cell)
             self.delegate.saveLanguages()
         }) {[unowned self]
             (value: Bool) -> Void in
@@ -103,6 +95,12 @@ class CountryViewController: UICollectionViewController {
                 self.navigationController?.popViewControllerAnimated(true)
             }
         }
+    }
+    
+    func distinguishCell(cell: CountryCell) {
+        cell.layer.cornerRadius = 7
+        cell.layer.borderWidth = 5
+        cell.layer.borderColor = view.tintColor.CGColor
     }
 
     

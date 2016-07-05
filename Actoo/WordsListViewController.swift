@@ -8,6 +8,8 @@
 
 import UIKit
 
+private let reuseIdentifier = "DictionaryCell"
+
 class WordsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
@@ -60,7 +62,7 @@ class WordsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("DictionaryCell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
         let currentWord = appDelegate.words[indexPath.row]
         
         let attachmentFromLng = NSTextAttachment()

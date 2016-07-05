@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 import Foundation
 
+private let reuseIdentifier = "TranslaterCell"
+
 class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var currentWord: NSManagedObject?
     weak var translateController: TranslaterViewController!
@@ -25,7 +27,7 @@ class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TranslaterCell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
             let title = currentWord!.valueForKey("trWord") as! String
             var synonyms = ""

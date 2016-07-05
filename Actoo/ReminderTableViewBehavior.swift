@@ -9,6 +9,8 @@ import UIKit
 import Foundation
 import CoreData
 
+private let reuseIdentifier = "ReminderCell"
+
 class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataSource {
     var currentWord: NSManagedObject?
     var extendMode = false
@@ -18,7 +20,7 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ReminderCell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
             let attachmentFromLng = NSTextAttachment()
             attachmentFromLng.image = imageBorderedWithColor(UIImage(named: currentWord!.valueForKey("fromLng") as! String)!)
