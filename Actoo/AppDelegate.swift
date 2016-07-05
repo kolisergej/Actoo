@@ -62,7 +62,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         word.setValue(wordForSave.syns, forKey: "syns")
         word.setValue(wordForSave.toLng, forKey: "toLng")
         words.append(word)
+        saveContext()
         return word
+    }
+    
+    func deleteWord(indexPath: NSIndexPath) {
+        managedObjectContext.deleteObject(words[indexPath.row])
+        saveContext()
+        words.removeAtIndex(indexPath.row)
     }
     
     func loadWords() {
@@ -86,6 +93,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    func saveDirections(directions: [String]) {
+        lng.setValue(directions, forKey: "directions")
+        saveContext()
+    }
+    
+    func saveLanguages(fromLng: String, toLng: String) {
+        lng.setValue(fromLng, forKey: "fromLng")
+        lng.setValue(toLng, forKey: "toLng")
+        saveContext()
+    }
+    
+    func changeWordRating(word: NSManagedObject, increase: Bool) {
+        let rating = (word.valueForKey("rating") as! Int) + (increase ? 1 : -1)
+        word.setValue(rating, forKey: "rating")
+        saveContext()
+    }
+    
     func sessionWords(count: Int) -> [NSManagedObject] {
         let fetchRequest = NSFetchRequest(entityName: "Word")
         let sort = NSSortDescriptor(key: "rating", ascending: false)
@@ -95,14 +119,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rating = fetchedResults.last!.valueForKey("rating") as! Int
         
         let firstPartFetchRequest = NSFetchRequest(entityName: "Word")
-        let predicate = NSPredicate(format: "%K > %i", "rating", rating)
         firstPartFetchRequest.sortDescriptors = [sort]
-        firstPartFetchRequest.predicate = predicate
+        firstPartFetchRequest.predicate = NSPredicate(format: "%K > %i", "rating", rating)
         var firstPart = try! managedObjectContext.executeFetchRequest(firstPartFetchRequest) as! [NSManagedObject]
         
         let secondPartFetchRequest = NSFetchRequest(entityName: "Word")
-        let predicate2 = NSPredicate(format: "%K == %i", "rating", rating)
-        secondPartFetchRequest.predicate = predicate2
+        secondPartFetchRequest.predicate = NSPredicate(format: "%K == %i", "rating", rating)
         var secondPart = try! managedObjectContext.executeFetchRequest(secondPartFetchRequest) as! [NSManagedObject]
 
         let size = secondPart.count - 1

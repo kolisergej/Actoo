@@ -103,9 +103,7 @@ class WordsListViewController: UIViewController, UITableViewDelegate, UITableVie
     // Override to support editing the table view.
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            appDelegate.managedObjectContext.deleteObject(appDelegate.words[indexPath.row])
-            appDelegate.saveContext()
-            appDelegate.words.removeAtIndex(indexPath.row)
+            appDelegate.deleteWord(indexPath)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             reminderViewController.needToReset = true
             if appDelegate.words.isEmpty {

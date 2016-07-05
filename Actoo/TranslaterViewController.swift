@@ -47,8 +47,7 @@ class TranslaterViewController: UIViewController {
                     }
                 }
             }
-            appDelegate.lng.setValue(forSave, forKey: "directions")
-            appDelegate.saveContext()
+            appDelegate.saveDirections(forSave)
         } else {
             let savedDirections = appDelegate.lng.valueForKey("directions") as! [String]
             for fromToLanguages in savedDirections {
@@ -103,10 +102,8 @@ class TranslaterViewController: UIViewController {
             let words = appDelegate.words
             for index in 0 ..< words.count {
                 if (words[index].valueForKey("origWord") as! String) == trimmedString && (words[index].valueForKey("fromLng") as! String) == fromLngBtn.currentAttributedTitle!.string && (words[index].valueForKey("toLng") as! String) == toLngBtn.currentAttributedTitle!.string {
-                    let rating = words[index].valueForKey("rating") as! Int
-                    words[index].setValue(rating + 1, forKey: "rating")
+                    appDelegate.changeWordRating(words[index], increase: true)
                     tableViewBehavior.currentWord = words[index]
-                    appDelegate.saveContext()
                     resultTableView.reloadData()
                     return
                 }
@@ -142,7 +139,6 @@ class TranslaterViewController: UIViewController {
                         if let word = self.handleTranslateNetworkAnswer(json) {
                             waitVc.dismissViewControllerAnimated(true) {[unowned self, word] in
                                 let objectWord = self.appDelegate.addWord(word)
-                                self.appDelegate.saveContext()
                                 self.tableViewBehavior.currentWord = objectWord
                                 self.resultTableView.reloadData()
                             }
@@ -205,9 +201,7 @@ class TranslaterViewController: UIViewController {
     }
     
     func saveLanguages() {
-        appDelegate.lng.setValue(fromLngBtn.currentAttributedTitle!.string, forKey: "fromLng")
-        appDelegate.lng.setValue(toLngBtn.currentAttributedTitle!.string, forKey: "toLng")
-        appDelegate.saveContext()
+        appDelegate.saveLanguages(fromLngBtn.currentAttributedTitle!.string, toLng: toLngBtn.currentAttributedTitle!.string)
     }
     
     func getCurrentTokenIndex() -> String {

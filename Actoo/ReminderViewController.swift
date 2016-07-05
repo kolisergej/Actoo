@@ -86,8 +86,7 @@ class ReminderViewController: UIViewController {
         if !sessionWords.isEmpty {
             let rating = sessionWords[currentOriginIndex].valueForKey("rating") as! Int
             if rating > 0 {
-                sessionWords[currentOriginIndex].setValue(rating - 1, forKey: "rating")
-                appDelegate.saveContext()
+                appDelegate.changeWordRating(sessionWords[currentOriginIndex], increase: false)
             }
             
             incrementCurrentIndex()
@@ -97,9 +96,7 @@ class ReminderViewController: UIViewController {
     
     @IBAction func rejectBtnPressed(sender: AnyObject) {
         if !sessionWords.isEmpty {
-            let rating = sessionWords[currentOriginIndex].valueForKey("rating") as! Int
-            sessionWords[currentOriginIndex].setValue(rating + 1, forKey: "rating")
-            appDelegate.saveContext()
+            appDelegate.changeWordRating(sessionWords[currentOriginIndex], increase: true)
             forgotBtn.hidden = true
             knowBtn.hidden = true
             gotItBtn.hidden = false
