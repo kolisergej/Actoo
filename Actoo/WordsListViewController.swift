@@ -14,14 +14,14 @@ class WordsListViewController: UIViewController, UITableViewDelegate, UITableVie
 
     let appDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
     weak var reminderViewController: ReminderViewController!
-    var initTextView: UITextView!
+    var initTextLabel: UILabel!
     
     @IBOutlet weak var dictionaryTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         dictionaryTableView.contentInset = UIEdgeInsetsMake(-36, 0, 36, 0);
-        initTextView = addInitTextView(view)
+        initTextLabel = addInitTextLabel(view)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -37,10 +37,10 @@ class WordsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewWillAppear(animated: Bool) {
         if appDelegate.words.isEmpty {
-            initTextView.hidden = false
+            initTextLabel.hidden = false
             dictionaryTableView.hidden = true
         } else {
-            initTextView.hidden = true
+            initTextLabel.hidden = true
             dictionaryTableView.hidden = false
             dictionaryTableView.reloadData()
         }
@@ -109,7 +109,7 @@ class WordsListViewController: UIViewController, UITableViewDelegate, UITableVie
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             reminderViewController.needToReset = true
             if appDelegate.words.isEmpty {
-                initTextView.hidden = false
+                initTextLabel.hidden = false
                 dictionaryTableView.hidden = true
             }
         } else if editingStyle == .Insert {

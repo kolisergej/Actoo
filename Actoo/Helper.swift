@@ -148,18 +148,33 @@ func imageBorderedWithColor(image: UIImage) -> UIImage {
     return result;
 }
 
-func addInitTextView(view: UIView) -> UITextView {
-    let initTextView = UITextView()
-    view.addSubview(initTextView)
-    let width = CGFloat(280)
-    let height = CGFloat(65)
-    initTextView.layer.frame = CGRectMake(view.center.x - CGFloat(width / 2), view.center.y - 30 - CGFloat(height / 2), width, height)
-    initTextView.text = "No words to remind.\nAdd them with translating"
-    initTextView.selectable = false
-    initTextView.editable = false
-    initTextView.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: ["name" : "System"]), size: 20)
-    initTextView.textAlignment = .Center
-    initTextView.textColor = UIColor.grayColor()
+func addInitTextLabel(view: UIView) -> UILabel {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "No words.\nAdd them with translating"
+    view.addSubview(label)
+
+    var constraints = NSLayoutConstraint.constraintsWithVisualFormat(
+        "V:[superview]-(<=1)-[label]",
+        options: NSLayoutFormatOptions.AlignAllCenterX,
+        metrics: nil,
+        views: ["superview":view, "label":label])
     
-    return initTextView
+    view.addConstraints(constraints)
+    
+    constraints = NSLayoutConstraint.constraintsWithVisualFormat(
+        "H:[superview]-(<=1)-[label]",
+        options: NSLayoutFormatOptions.AlignAllCenterY,
+        metrics: nil,
+        views: ["superview":view, "label":label])
+    
+    view.addConstraints(constraints)
+    
+    label.numberOfLines = 0
+    label.font = UIFont(descriptor: UIFontDescriptor(fontAttributes: ["name" : "System"]), size: 20)
+    label.textAlignment = .Center
+    label.textColor = UIColor.grayColor()
+    
+    return label
 }
+
