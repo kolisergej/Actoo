@@ -20,7 +20,7 @@ class ReminderViewController: UIViewController {
     
     var tableViewBehavior = ReminderTableViewBehavior()
     var initTextLabel: UILabel!
-    var sessionWords = [NSManagedObject]()
+    var sessionWords = [Word]()
     var currentOriginIndex = 0
     var needToReset = false
     
