@@ -156,7 +156,7 @@ class TranslaterViewController: UIViewController {
         }
     }
     
-    func handleTranslateNetworkAnswer(json: JSON) -> Word? {
+    func handleTranslateNetworkAnswer(json: JSON) -> ActooWord? {
         let translateAnswer = json["def"].arrayValue
         if !translateAnswer.isEmpty {
             let origWord = translateAnswer[0]["text"].stringValue
@@ -171,7 +171,7 @@ class TranslaterViewController: UIViewController {
             for example in examplesAnswer {
                 examples[example["text"].stringValue] = example["tr"][0]["text"].stringValue
             }
-            return Word(origWord: origWord.lowercaseString, fromLng: fromLngBtn.currentAttributedTitle!.string, trWord: tr, toLng: toLngBtn.currentAttributedTitle!.string, syns: synonims, examples: examples, rating: 1)
+            return ActooWord(origWord: origWord.lowercaseString, fromLng: fromLngBtn.currentAttributedTitle!.string, trWord: tr, toLng: toLngBtn.currentAttributedTitle!.string, syns: synonims, examples: examples, rating: 1)
         }
         return nil
     }

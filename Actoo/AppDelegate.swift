@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
 
-    func addWord(wordForSave: Word) -> NSManagedObject {
+    func addWord(wordForSave: ActooWord) -> NSManagedObject {
         let entity = NSEntityDescription.entityForName("Word", inManagedObjectContext: managedObjectContext)
         let word = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
         word.setValue(wordForSave.origWord, forKey: "origWord")

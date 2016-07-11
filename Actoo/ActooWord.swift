@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Word: NSObject {
+class ActooWord: NSObject {
     let origWord: String
     let fromLng: String
     let trWord: String
