@@ -49,7 +49,7 @@ class TranslaterViewController: UIViewController {
             }
             appDelegate.saveDirections(forSave)
         } else {
-            let savedDirections = appDelegate.lng.valueForKey("directions") as! [String]
+            let savedDirections = appDelegate.lng.directions as! [String]
             for fromToLanguages in savedDirections {
                 let fromTo = fromToLanguages.componentsSeparatedByString("-");
                 var toArray = languageDirections[fromTo[0]] ?? [];
@@ -61,8 +61,8 @@ class TranslaterViewController: UIViewController {
             showErrorController(title: connectionError, message: checkInternetConnection + "\n Actoo will use saved data.", view: parentViewController!)
         }
         
-        let fromLng = appDelegate.lng.valueForKey("fromLng") as! String
-        let toLng = appDelegate.lng.valueForKey("toLng") as! String
+        let fromLng = appDelegate.lng.fromLng!
+        let toLng = appDelegate.lng.toLng!
         
         fromLngBtn.setImage(UIImage(named: fromLng), forState: .Normal)
         fromLngBtn.setAttributedTitle(NSAttributedString(string: fromLng), forState: .Normal)
@@ -101,7 +101,7 @@ class TranslaterViewController: UIViewController {
             
             let words = appDelegate.words
             for index in 0 ..< words.count {
-                if (words[index].valueForKey("origWord") as! String) == trimmedString && (words[index].valueForKey("fromLng") as! String) == fromLngBtn.currentAttributedTitle!.string && (words[index].valueForKey("toLng") as! String) == toLngBtn.currentAttributedTitle!.string {
+                if words[index].origWord! == trimmedString && words[index].fromLng! == fromLngBtn.currentAttributedTitle!.string && words[index].toLng! == toLngBtn.currentAttributedTitle!.string {
                     appDelegate.changeWordRating(words[index], increase: true)
                     tableViewBehavior.currentWord = words[index]
                     resultTableView.reloadData()

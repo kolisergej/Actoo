@@ -12,26 +12,26 @@ import CoreData
 private let reuseIdentifier = "ReminderCell"
 
 class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataSource {
-    var currentWord: NSManagedObject?
+    var currentWord: Word?
     var extendMode = false
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentWord != nil ? (extendMode ? 2 + (currentWord!.valueForKey("examples") as! [String: String]).count : 1) : 0
+        return currentWord != nil ? (extendMode ? 2 + (currentWord!.examples as! [String: String]).count : 1) : 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
             let attachmentFromLng = NSTextAttachment()
-            attachmentFromLng.image = imageBorderedWithColor(UIImage(named: currentWord!.valueForKey("fromLng") as! String)!)
+            attachmentFromLng.image = imageBorderedWithColor(UIImage(named: currentWord!.fromLng!)!)
 
             let attachmentToLng = NSTextAttachment()
-            attachmentToLng.image = imageBorderedWithColor(UIImage(named: currentWord!.valueForKey("toLng") as! String)!)
+            attachmentToLng.image = imageBorderedWithColor(UIImage(named: currentWord!.toLng!)!)
             
             let attachmentArrow = NSTextAttachment()
             attachmentArrow.image = UIImage(named: "arrow")!
             
-            let attributedString = NSMutableAttributedString(string: (currentWord!.valueForKey("origWord") as! String) + " ")
+            let attributedString = NSMutableAttributedString(string: (currentWord!.origWord!) + " ")
             attributedString.appendAttributedString(NSAttributedString(attachment: attachmentFromLng))
             attributedString.appendAttributedString(NSAttributedString(attachment: attachmentArrow))
             attributedString.appendAttributedString(NSAttributedString(attachment: attachmentToLng))
@@ -40,9 +40,9 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
             cell.textLabel?.textAlignment = .Center
         }
         else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
-            let title = currentWord!.valueForKey("trWord") as! String
+            let title = currentWord!.trWord!
             var synonyms = ""
-            let syns = currentWord!.valueForKey("syns") as! [String]
+            let syns = currentWord!.syns! as! [String]
             if !syns.isEmpty {
                 synonyms += "; ";
                 for synonym in syns {
@@ -51,9 +51,9 @@ class ReminderTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataS
             }
             cell.textLabel?.attributedText = NSAttributedString(string: title + synonyms)
         } else {
-            let keys = Array((currentWord!.valueForKey("examples") as! [String: String]).keys)
+            let keys = Array((currentWord!.examples as! [String: String]).keys)
             let key = keys[indexPath.row - 2]
-            cell.textLabel?.attributedText = NSAttributedString(string: key + " - " + (currentWord!.valueForKey("examples") as! [String: String])[key]!)
+            cell.textLabel?.attributedText = NSAttributedString(string: key + " - " + (currentWord!.examples as! [String: String])[key]!)
             cell.textLabel?.textAlignment = .Left
         }
         cell.selectionStyle = .None

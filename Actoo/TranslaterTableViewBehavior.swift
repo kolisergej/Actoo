@@ -13,7 +13,7 @@ import Foundation
 private let reuseIdentifier = "TranslaterCell"
 
 class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-    var currentWord: NSManagedObject?
+    var currentWord: Word?
     weak var translateController: TranslaterViewController!
     
     func textFieldShouldReturn(userText: UITextField) -> Bool {
@@ -23,15 +23,15 @@ class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentWord != nil ? (1 + (currentWord!.valueForKey("examples") as! [String: String]).count) : 0
+        return currentWord != nil ? (1 + (currentWord!.examples as! [String: String]).count) : 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
         if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
-            let title = currentWord!.valueForKey("trWord") as! String
+            let title = currentWord!.trWord!
             var synonyms = ""
-            let syns = currentWord!.valueForKey("syns") as! [String]
+            let syns = currentWord!.syns as! [String]
             if !syns.isEmpty {
                 synonyms += "; ";
                 for synonym in syns {
@@ -40,9 +40,9 @@ class TranslaterTableViewBehavior: NSObject, UITableViewDelegate, UITableViewDat
             }
             cell.textLabel?.text = title + synonyms //+ "\(currentWord!.valueForKey("rating") as! Int)"
         } else {
-            let keys = Array((currentWord!.valueForKey("examples") as! [String: String]).keys)
+            let keys = Array((currentWord!.examples as! [String: String]).keys)
             let key = keys[indexPath.row - 1]
-            cell.textLabel?.text = key + " - " + (currentWord!.valueForKey("examples") as! [String: String])[key]!
+            cell.textLabel?.text = key + " - " + (currentWord!.examples as! [String: String])[key]!
         }
         cell.selectionStyle = .None
         return cell

@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CoreDataManager.instance.saveContext()
     }
 
-    func addWord(wordForSave: ActooWord) -> NSManagedObject {
+    func addWord(wordForSave: ActooWord) -> Word {
         let word = Word()
         word.origWord = wordForSave.origWord
         word.examples = wordForSave.examples

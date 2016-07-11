@@ -29,40 +29,28 @@ class ReminderViewController: UIViewController {
         // Do any additional setup after loading the view.
         navigationItem.title = "Reminder"
         configureUIOnLoad()
-        
         initTextLabel = addInitTextLabel(view)
-        
-        let areThereWords = !appDelegate.words.isEmpty
-        forgotBtn.hidden = !areThereWords
-        knowBtn.hidden = !areThereWords
-        initTextLabel.hidden = areThereWords
-        reminderTableView.hidden = !areThereWords
-        
-        if areThereWords {
-            resetSessionWords()
-            showWord()
-        }
-        
         tableViewBehavior.extendMode = false
     }
     
     override func viewWillAppear(animated: Bool) {
-        if !appDelegate.words.isEmpty {
-            initTextLabel.hidden = true
-            reminderTableView.hidden = false
+        let thereAreWords = !appDelegate.words.isEmpty
+        
+        initTextLabel.hidden = thereAreWords
+        reminderTableView.hidden = !thereAreWords
+        
+        if thereAreWords {
             if tableViewBehavior.currentWord == nil || needToReset {
                 needToReset = false
-                forgotBtn.hidden = false
-                knowBtn.hidden = false
-                gotItBtn.hidden = true
+                forgotBtn.hidden = !thereAreWords
+                knowBtn.hidden = !thereAreWords
+                gotItBtn.hidden = thereAreWords
                 resetSessionWords()
                 showWord()
             }
         } else {
-            forgotBtn.hidden = true
-            knowBtn.hidden = true
-            initTextLabel.hidden = false
-            reminderTableView.hidden = true
+            forgotBtn.hidden = !thereAreWords
+            knowBtn.hidden = !thereAreWords
         }
     }
 
@@ -84,7 +72,7 @@ class ReminderViewController: UIViewController {
     
     @IBAction func acceptBtnPressed(sender: AnyObject) {
         if !sessionWords.isEmpty {
-            let rating = sessionWords[currentOriginIndex].valueForKey("rating") as! Int
+            let rating = sessionWords[currentOriginIndex].rating
             if rating > 0 {
                 appDelegate.changeWordRating(sessionWords[currentOriginIndex], increase: false)
             }
