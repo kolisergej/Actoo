@@ -12,6 +12,9 @@ import CoreData
 
 class Lng: NSManagedObject {
 
-// Insert code here to add functionality to your managed object subclass
+    convenience init() {
+        // Создание нового объекта
+        self.init(entity: CoreDataManager.instance.entityForName("Lng"), insertIntoManagedObjectContext: CoreDataManager.instance.managedObjectContext)
+    }
 
 }
